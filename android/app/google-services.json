@@ -1,0 +1,163 @@
+{
+  "project_info": {
+    "project_number": "471137557888",
+    "firebase_url": "https://meety-flutter-default-rtdb.firebaseio.com",
+    "project_id": "meety-flutter",
+    "storage_bucket": "meety-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:471137557888:android:2bbe32348634b153867565",
+        "android_client_info": {
+          "package_name": "com.app.meety_dating_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "471137557888-17ml25ihbncji732lgfva8vo8orni8l1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.meety_dating_app",
+            "certificate_hash": "54f77a371ed530b24469513c6520a7d946a06200"
+          }
+        },
+        {
+          "client_id": "471137557888-60r36m0g1se6h11nbb58c1k8efdj5tqc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.meety_dating_app",
+            "certificate_hash": "4c1201c33d097b47f7e0049699cd3179fd957dc0"
+          }
+        },
+        {
+          "client_id": "471137557888-foln4alpmhj8odcr532dsqp4qhmk7o86.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.meety_dating_app",
+            "certificate_hash": "2f31ab96e2680a62beec08824645dd8b702c7521"
+          }
+        },
+        {
+          "client_id": "471137557888-g3mbvbnipedo6b91ahqrc2ui069p7vec.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.meety_dating_app",
+            "certificate_hash": "5e785789cef38c0d42d6a4ebe4a920db9165cb2e"
+          }
+        },
+        {
+          "client_id": "471137557888-oshbulabrrpbstdpfbf8dcm8s245fjl9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.meety_dating_app",
+            "certificate_hash": "743e6d6bb0e97741b4f37a07807e66bf4d10b658"
+          }
+        },
+        {
+          "client_id": "471137557888-h2aflmj9mcnr8tb46j635tfiasjbc8r8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAR02faNyxyPI_V9H8DSqlakHWizBiJeUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "471137557888-h2aflmj9mcnr8tb46j635tfiasjbc8r8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "471137557888-c1461801sldsienge0vrp5d33e3mpuoq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.meetydatingapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:471137557888:android:f30446454915d043867565",
+        "android_client_info": {
+          "package_name": "matchrealconnect.meety.dating"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "471137557888-1vi2l85crtf28in6lehb8tr064k54ogu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "matchrealconnect.meety.dating",
+            "certificate_hash": "743e6d6bb0e97741b4f37a07807e66bf4d10b658"
+          }
+        },
+        {
+          "client_id": "471137557888-2t98a7054vc830r8lre693edvb73fts2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "matchrealconnect.meety.dating",
+            "certificate_hash": "4c1201c33d097b47f7e0049699cd3179fd957dc0"
+          }
+        },
+        {
+          "client_id": "471137557888-eigv8nbk7tumnel119i8g1fsc0vjvu11.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "matchrealconnect.meety.dating",
+            "certificate_hash": "5e785789cef38c0d42d6a4ebe4a920db9165cb2e"
+          }
+        },
+        {
+          "client_id": "471137557888-hj3qipdduqfijhk7lfm7ednuv7dr0jc1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "matchrealconnect.meety.dating",
+            "certificate_hash": "2f31ab96e2680a62beec08824645dd8b702c7521"
+          }
+        },
+        {
+          "client_id": "471137557888-k5g7pn2hq3kd6oohpol3d5h1ghvire1c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "matchrealconnect.meety.dating",
+            "certificate_hash": "54f77a371ed530b24469513c6520a7d946a06200"
+          }
+        },
+        {
+          "client_id": "471137557888-h2aflmj9mcnr8tb46j635tfiasjbc8r8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAR02faNyxyPI_V9H8DSqlakHWizBiJeUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "471137557888-h2aflmj9mcnr8tb46j635tfiasjbc8r8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "471137557888-c1461801sldsienge0vrp5d33e3mpuoq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.meetydatingapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
