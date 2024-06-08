@@ -13,10 +13,15 @@ import 'package:meety_dating_app/services/internet_service.dart';
 import 'package:meety_dating_app/services/shared_pref_manager.dart';
 import 'package:meety_dating_app/services/singleton_locator.dart';
 
+import 'base_api.dart';
+
 typedef OnUploadProgressCallback = void Function(int percentage);
 
 class ApiHelper {
-  late final Dio _dio;
+  // late final Dio _dio;
+
+  // static final dioAPI = BaseApi().dio();
+  static final _dio = BaseApi().dio();
 
   ApiHelper() {
     BaseOptions baseOptions = BaseOptions(
@@ -25,7 +30,7 @@ class ApiHelper {
       receiveTimeout: const Duration(seconds: 10),
       validateStatus: (status) => true,
     );
-    _dio = Dio(baseOptions);
+    // _dio = Dio(baseOptions);
   }
 
   Future<Either<String, Response?>> getCallWithoutHeader(
@@ -106,16 +111,12 @@ class ApiHelper {
               headers: headersMap),
           onSendProgress: (received, total) {
             if (total != -1) {
-              if (kDebugMode) {
-
-              }
+              if (kDebugMode) {}
             }
           },
           onReceiveProgress: (received, total) {
             if (total != -1) {
-              if (kDebugMode) {
-
-              }
+              if (kDebugMode) {}
             }
           },
         );
@@ -176,8 +177,7 @@ class ApiHelper {
               contentType: Headers.formUrlEncodedContentType,
               headers: headersMap),
           onSendProgress: (received, total) {
-            if (total != -1) {
-            }
+            if (total != -1) {}
           },
           onReceiveProgress: (received, total) {
             if (total != -1) {
