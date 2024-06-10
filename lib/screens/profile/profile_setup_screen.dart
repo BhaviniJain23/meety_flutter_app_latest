@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'dart:math';
+import 'dart:developer' as d;
 
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/cupertino.dart';
@@ -259,31 +260,38 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
                                   SizedBox(
                                     height:
                                         ResponsiveDesign.height(30, context),
-                                    child: TextBtnX(color: red,
+                                    child: TextBtnX(
+                                        color: red,
                                         onPressed: () async {
                                           if (currentPage.value == 5) {
-                                            if (myInterestList.value.length == 1 ||
+                                            if (/*myInterestList.value.length == 1 ||
                                                 myInterestList.value.length ==
                                                     2 ||
                                                 myInterestList.value.length ==
                                                     3 ||
                                                 myInterestList.value.length ==
-                                                    4 ||
-                                                myInterestList.value.length ==
-                                                    5 ||
-                                                myInterestList.value.length ==
-                                                    6 ||
-                                                myInterestList.value.length ==
-                                                    7 ||
-                                                myInterestList.value.length ==
-                                                    8 ||
-                                                myInterestList.value.length ==
-                                                    9) {
+                                                    4 ||*/
+                                                myInterestList.value.isEmpty ||
+                                                    myInterestList
+                                                            .value.length ==
+                                                        5 ||
+                                                    myInterestList
+                                                            .value.length ==
+                                                        6 ||
+                                                    myInterestList
+                                                            .value.length ==
+                                                        7 ||
+                                                    myInterestList
+                                                            .value.length ==
+                                                        8 ||
+                                                    myInterestList
+                                                            .value.length ==
+                                                        9) {
                                               AlertService
                                                   .showAlertMessageWithTwoBtn(
                                                 context: context,
                                                 alertMsg:
-                                                    "Select at least 4 of your Interest ",
+                                                    "Select at least 4 OR 0 of your Interest ",
                                                 positiveText: "Ok",
                                                 negativeText: "Skip",
                                                 noTap: () {
@@ -548,7 +556,10 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
         }
         break;
       case 5:
-        if (myInterestList.value.length >= Utils.minInterestLength) {
+        d.log("condition: ${btnEnable.value}");
+        d.log("myInterestList.value: ${myInterestList.value}");
+        if (myInterestList.value.length >= Utils.minInterestLength ||
+            myInterestList.value.length == 1) {
           btnEnable.value = true;
         } else if (btnEnable.value) {
           btnEnable.value = false;
@@ -1091,7 +1102,8 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
         ),
         SliverPadding(
           padding: ResponsiveDesign.only(context, bottom: 9),
-          sliver: SliverAppBar(surfaceTintColor: Colors.transparent,
+          sliver: SliverAppBar(
+            surfaceTintColor: Colors.transparent,
             foregroundColor: Colors.transparent,
             leadingWidth: 5,
             pinned: true,
@@ -1163,7 +1175,7 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
                   return ChipsChoice<String>.multiple(
                     value: values[0],
                     wrapped: true,
-                    padding: const EdgeInsets.only(top: 5,bottom: 5,left: 5),
+                    padding: const EdgeInsets.only(top: 5, bottom: 5, left: 5),
                     onChanged: (val) {
                       if (values[0].length < Utils.maxInterestLength) {
                         myInterestList.value = List.from(val);
@@ -1542,6 +1554,7 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
   }
 
   Future<void> updateProfile(Map<String, dynamic> data) async {
+    d.log("data: ${data.toString()}");
     try {
       bool isInternet =
           await sl<InternetConnectionService>().hasInternetConnection();
@@ -1549,6 +1562,7 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
         Map<String, dynamic> apiResponse = await UserRepository().updateProfile(
           data: data,
         );
+        d.log("apiResponse: ${apiResponse.toString()}");
         if (apiResponse[UiString.successText]) {
           if (apiResponse[UiString.dataText] != null) {
             User user = User.fromJson(apiResponse[UiString.dataText]);
@@ -1618,7 +1632,9 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
           'looking_for': lookingForIndex != -1
               ? lookingForList.value[lookingForIndex].val
               : '',
-          'interest': myInterestList.value.join(","),
+          'interest': (myInterestList.value.isEmpty)
+              ? []
+              : myInterestList.value.join(","),
           'about': _aboutController.text.trim(),
           'education': educationIndex != -1
               ? mainList.value[educationIndex].educationId

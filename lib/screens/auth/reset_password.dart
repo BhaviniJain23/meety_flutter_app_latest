@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:meety_dating_app/constants/ui_strings.dart';
@@ -64,17 +66,19 @@ class _ResetPasswordState extends State<ResetPassword> {
   }
 
   Future<void> resetPassword() async {
-    if(_formKey.currentState?.validate() ?? false){
+    if (_formKey.currentState?.validate() ?? false) {
       try {
         FocusScope.of(context).unfocus(); //to hide the keyboard - if an
         bool isInternet =
-        await sl<InternetConnectionService>().hasInternetConnection();
+            await sl<InternetConnectionService>().hasInternetConnection();
         if (isInternet) {
-          Map<String, dynamic> apiResponse = await AuthRepository().resetPassword(
+          Map<String, dynamic> apiResponse =
+              await AuthRepository().resetPassword(
             userId: widget.userId,
             newPassword: _password.text,
           );
 
+          log("apiResponse: ${apiResponse.toString()}");
           if (apiResponse[UiString.successText]) {
             sl<NavigationService>().popUntil((route) => route.isFirst);
           } else {

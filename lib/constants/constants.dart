@@ -3,7 +3,6 @@
 import 'package:meety_dating_app/constants/ui_strings.dart';
 
 class Constants {
-
   static const String firebaseServerNotiKey =
       'AAAAbbH8nYA:APA91bFWDnnKY9Q44wgbHsG0PdCOj462dgKh3uZ3wWtsERxol8yH1cBLPxxDCMbL2XD3sCUzwixwLkxR0PAFyg1TV7EiNYQsg8idXwC34cn72-OnAQNXMBJkyQn-MGLddOhyreCZE_df';
   static const String imageUrl =
@@ -177,4 +176,6 @@ class Constants {
   static const String privacyPolicy = "";
 
   static const String termsAndConditions = "";
+  static const serverKey =
+      "AAAAbbH8nYA:APA91bFWDnnKY9Q44wgbHsG0PdCOj462dgKh3uZ3wWtsERxol8yH1cBLPxxDCMbL2XD3sCUzwixwLkxR0PAFyg1TV7EiNYQsg8idXwC34cn72-OnAQNXMBJkyQn-MGLddOhyreCZE_df";
 }

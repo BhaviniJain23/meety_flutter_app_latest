@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'dart:ui' as ui show PlaceholderAlignment;
-
+import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:meety_dating_app/constants/assets.dart';
@@ -109,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               /// Forgot Password Button
                               Flexible(
                                 child: Row(
-                                 mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     ValueListenableBuilder(
@@ -218,6 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   password: _passController.text,
                   loginType: '0',
                   socialId: '');
+          log("apiResponseL: ${apiResponse.toString()}");
           if (apiResponse[UiString.successText]) {
             if (apiResponse[UiString.dataText] != null) {
               if ((apiResponse[UiString.dataText] as Map)
@@ -235,44 +238,43 @@ class _LoginScreenState extends State<LoginScreen> {
               }
               User user = User.fromJson(apiResponse[UiString.dataText]);
               await sl<SharedPrefsManager>().saveUserInfo(user);
-
-              Future.delayed((Duration.zero), () {
-
-                _navigationService.navigateTo(RoutePaths.otpVerification,
-                    arguments: {
-                      'email': _emailController.text,
-                      'isFromForgotPassword': false
-                    });
-
-                // if (user.dob != null && user.dob!.isNotEmpty) {
-                //   if (user.images != null && user.images!.isEmpty) {
-                //     _navigationService.navigateTo(RoutePaths.addPhotos,
-                //         withPushAndRemoveUntil: true);
-                //   } else {
-                //     // context.showSnackBar(apiResponse[UiString.messageText]);
-                //
-                //     _navigationService.navigateTo(RoutePaths.enableLocation,
-                //         withPushAndRemoveUntil: true, arguments: true);
-                //   }
-                // }
-                // else if (user.isVerified.toString() == '1') {
-                //   // context.showSnackBar(apiResponse[UiString.messageText]);
-                //   _navigationService.navigateTo(
-                //     RoutePaths.boardingProfile,
-                //     withPushAndRemoveUntil: true,
-                //   );
-                // }
-                // else {
-                //   // context.showSnackBar(apiResponse[UiString.messageText]);
-                //   _navigationService.navigateTo(RoutePaths.otpVerification,
-                //       arguments: {
-                //         'email': _emailController.text,
-                //         'isFromForgotPassword': false
-                //       });
-                // }
-
-
-              });
+              String? currentDeviceId;
+              if (Platform.isIOS) {
+                currentDeviceId =
+                    (await DeviceInfoPlugin().iosInfo).identifierForVendor ??
+                        '';
+              } else {
+                currentDeviceId =
+                    (await DeviceInfoPlugin().androidInfo).id ?? '';
+              }
+              String? userLastDeviceId = user.deviceId;
+              if (userLastDeviceId != null &&
+                  currentDeviceId != null &&
+                  currentDeviceId == userLastDeviceId) {
+                if (user.dob != null && user.dob!.isNotEmpty) {
+                  if (user.images != null && user.images!.isEmpty) {
+                    _navigationService.navigateTo(RoutePaths.addPhotos,
+                        withPushAndRemoveUntil: true);
+                  } else {
+                    // context.showSnackBar(apiResponse[UiString.messageText]);
+                    _navigationService.navigateTo(RoutePaths.enableLocation,
+                        withPushAndRemoveUntil: true, arguments: true);
+                  }
+                } else {
+                  _navigationService.navigateTo(
+                    RoutePaths.boardingProfile,
+                    withPushAndRemoveUntil: true,
+                  );
+                }
+              } else {
+                Future.delayed((Duration.zero), () {
+                  _navigationService.navigateTo(RoutePaths.otpVerification,
+                      arguments: {
+                        'email': _emailController.text,
+                        'isFromForgotPassword': false
+                      });
+                });
+              }
             } else {
               if (context.mounted) {
                 Future.delayed(const Duration(seconds: 0), () {

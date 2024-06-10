@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:meety_dating_app/config/routes_path.dart';
@@ -29,7 +31,7 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: _isApiCall,
-      builder: (context,value,child){
+      builder: (context, value, child) {
         return IgnorePointer(
           ignoring: value,
           child: Scaffold(
@@ -42,15 +44,16 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 24),
-                    const Heading(text:UiString.forgotPasswordText,),
+                    const Heading(
+                      text: UiString.forgotPasswordText,
+                    ),
                     const SizedBox(height: 15),
-                    const SubHeading(
-                        text: UiString.forgotPasswordCaptionText),
+                    const SubHeading(text: UiString.forgotPasswordCaptionText),
                     const SizedBox(height: 30),
                     EmailTextField(textController: _emailController),
                     const SizedBox(height: 30),
                     FillBtnX(
-                      onPressed:forgotPassword,
+                      onPressed: forgotPassword,
                       text: UiString.sendMailText,
                     ),
                     const SizedBox(height: 56),
@@ -64,39 +67,38 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
     );
   }
 
-
   Future<void> forgotPassword() async {
     try {
       if (_formKey.currentState!.validate()) {
         FocusScope.of(context).unfocus(); //to hide the keyboard - if an
         bool isInternet =
-        await sl<InternetConnectionService>().hasInternetConnection();
+            await sl<InternetConnectionService>().hasInternetConnection();
         if (isInternet) {
-          Map<String, dynamic> apiResponse = await AuthRepository().
-          forgotPassword(
-              email: _emailController.text,);
+          Map<String, dynamic> apiResponse =
+              await AuthRepository().forgotPassword(
+            email: _emailController.text,
+          );
 
+          log("apiResponse: ${apiResponse.toString()}");
           if (apiResponse[UiString.successText]) {
             if (apiResponse[UiString.dataText] != null) {
-
-              if((apiResponse[UiString.dataText] as Map).containsKey("token")){
-                await sl<SharedPrefsManager>().saveToken(apiResponse[UiString.dataText]['token']);
+              if ((apiResponse[UiString.dataText] as Map)
+                  .containsKey("token")) {
+                await sl<SharedPrefsManager>()
+                    .saveToken(apiResponse[UiString.dataText]['token']);
               }
               Future.delayed(const Duration(seconds: 0), () {
                 context.showSnackBar(apiResponse[UiString.messageText]);
                 Future.delayed(const Duration(seconds: 0), () {
                   context.showSnackBar(apiResponse[UiString.messageText]);
-                  sl<NavigationService>().navigateTo(
-                      RoutePaths.otpVerification,
+                  sl<NavigationService>().navigateTo(RoutePaths.otpVerification,
                       arguments: {
-                        'email':_emailController.text,
-                        'isFromForgotPassword':true
-                      }
-                  );
+                        'email': _emailController.text,
+                        'isFromForgotPassword': true
+                      });
                 });
               });
-            }
-            else{
+            } else {
               Future.delayed(const Duration(seconds: 0), () {
                 context.showSnackBar(apiResponse[UiString.messageText]);
               });
@@ -113,10 +115,9 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
         }
       }
     } on Exception {
-      if(kDebugMode){
+      if (kDebugMode) {
         // print("On register:$e");
       }
     }
   }
-
 }

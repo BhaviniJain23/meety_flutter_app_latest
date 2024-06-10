@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:meety_dating_app/config/routes_path.dart';
@@ -47,6 +47,11 @@ class _ProfileTabState extends State<ProfileTab> {
   @override
   void initState() {
     loginUser = sl<SharedPrefsManager>().getUserDataInfo();
+    if (loginUser != null) {
+      log("loginUser: ${loginUser!.toJson().toString()}");
+    } else {
+      log("loginUser is null");
+    }
     super.initState();
   }
 
@@ -158,6 +163,7 @@ class _ProfileTabState extends State<ProfileTab> {
           child: Selector<LoginUserProvider, User?>(
               selector: (context, provider) => provider.user,
               builder: (context, loginUserVal, child) {
+                log("message: ${loginUserVal.toString()}");
                 SubscriptionProvider subscriptionProvider =
                     Provider.of(context, listen: false);
                 return Column(

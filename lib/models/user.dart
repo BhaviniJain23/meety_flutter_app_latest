@@ -87,6 +87,7 @@ class User {
       required this.canMsgSend,
       required this.channelId,
       this.educationId,
+      this.deviceId,
       this.occupationId,
       this.educationName,
       this.occupationName,
@@ -168,6 +169,7 @@ class User {
   final String? notiMsgMatch;
   final String? notiMatch;
   final String? educationId;
+  final String? deviceId;
   final String? occupationId;
   final String? educationName;
   final String? occupationName;
@@ -256,6 +258,7 @@ class User {
       String? educationId,
       String? educationName,
       String? occupationId,
+      String? deviceId,
       String? occupationName,
       UserSubscription? pastSubscription}) {
     return User(
@@ -324,6 +327,7 @@ class User {
         educationId: educationId ?? this.educationId,
         educationName: educationName ?? this.educationName,
         occupationId: occupationId ?? this.occupationId,
+        deviceId: deviceId ?? deviceId,
         occupationName: occupationName ?? this.occupationName,
         pastSubscription: pastSubscription ?? this.pastSubscription);
   }
@@ -416,8 +420,11 @@ class User {
         educationId: json["education_id"],
         educationName: json['education_name'] ?? json['education'],
         occupationId: json["occupation_id"],
+        deviceId: json["device_id"],
         occupationName: json['occupation_name'] ?? json['occupation'],
-        pastSubscription: json['past_subscription'] != null ? UserSubscription.fromJson(json['past_subscription']) : json['past_subscription']);
+        pastSubscription: json['past_subscription'] != null
+            ? UserSubscription.fromJson(json['past_subscription'])
+            : json['past_subscription']);
   }
 
   Map<String, dynamic> toJson() => {
@@ -490,7 +497,8 @@ class User {
         "occupation_id": occupationId,
         "occupation": occupation,
         "occupation_name": occupationName,
-        'past_subscription':pastSubscription?.toJson()
+        "device_id": deviceId,
+        'past_subscription': pastSubscription?.toJson()
       };
 
   Map<String, dynamic> toMap() => {
@@ -515,6 +523,7 @@ class User {
         "hometown": hometown,
         "language_known": languageKnown,
         "habit": habit,
+        "device_id": deviceId,
       };
 
   static String getLookingFor(String jsonVal, {bool isText = true}) {
@@ -572,6 +581,7 @@ class User {
             isGenderShow == other.isGenderShow &&
             isSexOrientationShow == other.isSexOrientationShow &&
             educationId == other.educationId &&
+            deviceId == other.deviceId &&
             listEquals(images, other.images);
   }
 

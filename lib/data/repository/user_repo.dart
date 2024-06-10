@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -16,6 +18,7 @@ class UserRepository {
         api: EndPoints.SET_UP_PROFILE_API,
         data: data,
       );
+      // log("response: ${response.toString()}");
       return response.fold((l) {
         return UiString.fixFailResponse(errorMsg: l);
       }, (r) {

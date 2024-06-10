@@ -44,7 +44,8 @@ class ApiHelper {
         Map<String, String> headersMap = {};
         if (headers) {
           String? token = sl<SharedPrefsManager>().getToken();
-          headersMap["Authorization"] = token;
+          // headersMap["Authorization"] = token;
+          headersMap["Authorization"] = "Bearer $token";
         }
 
         Response response = await _dio.get(
@@ -100,7 +101,8 @@ class ApiHelper {
         Map<String, String> headersMap = {};
         if (headers) {
           String? token = sl<SharedPrefsManager>().getToken();
-          headersMap["Authorization"] = token;
+          // headersMap["Authorization"] = token;
+          headersMap["Authorization"] = "Bearer $token";
         }
 
         Response response = await _dio.post(
@@ -167,7 +169,8 @@ class ApiHelper {
         Map<String, String> headersMap = {};
         if (headers) {
           String? token = sl<SharedPrefsManager>().getToken();
-          headersMap["Authorization"] = token;
+          // headersMap["Authorization"] = token;
+          headersMap["Authorization"] = "Bearer ${token}";
         }
 
         Response response = await _dio.put(
@@ -227,7 +230,8 @@ class ApiHelper {
     Map<String, String> headersMap = {};
     if (headers) {
       String? token = sl<SharedPrefsManager>().getToken();
-      headersMap["Authorization"] = token;
+      // headersMap["Authorization"] = token;
+      headersMap["Authorization"] = "Bearer ${token}";
     }
     var dio = Dio();
     try {
