@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:meety_dating_app/constants/colors.dart';
-import 'package:meety_dating_app/constants/constants.dart';
-import 'package:meety_dating_app/constants/ui_strings.dart';
-import 'package:meety_dating_app/data/repository/user_repo.dart';
-import 'package:meety_dating_app/models/user.dart';
-import 'package:meety_dating_app/screens/auth/widgets/texfields.dart';
-import 'package:meety_dating_app/services/shared_pref_manager.dart';
-import 'package:meety_dating_app/services/singleton_locator.dart';
-import 'package:meety_dating_app/widgets/core/alerts.dart';
-import 'package:meety_dating_app/widgets/core/appbars.dart';
-import 'package:meety_dating_app/widgets/core/buttons.dart';
-import 'package:meety_dating_app/widgets/utils/extensions.dart';
+import '../../../../../widgets/utils/extensions.dart';
+import '../../../../../constants/colors.dart';
+import '../../../../../constants/constants.dart';
+import '../../../../../constants/ui_strings.dart';
+import '../../../../../data/repository/user_repo.dart';
+import '../../../../../models/user.dart';
+import '../../../../../services/shared_pref_manager.dart';
+import '../../../../../services/singleton_locator.dart';
+import '../../../../../widgets/core/alerts.dart';
+import '../../../../../widgets/core/appbars.dart';
+import '../../../../../widgets/core/buttons.dart';
+import '../../../../auth/widgets/texfields.dart';
 
 class DeleteAccountScreen extends StatefulWidget {
   final bool isDeactivate;
@@ -26,6 +26,15 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   ValueNotifier<int> isVerify = ValueNotifier(-1);
+  static List<String> deactivateDaysList = [
+    "15 ${UiString.days}",
+    "20 ${UiString.days}",
+    "25 ${UiString.days}",
+    "30 ${UiString.days}",
+    "50 ${UiString.days}",
+    "100 ${UiString.days}",
+  ];
+  ValueNotifier<String> selectedDays = ValueNotifier(deactivateDaysList[0]);
 
   @override
   void initState() {
@@ -35,6 +44,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: whitesmoke,
       appBar: const AppBarX(
@@ -103,8 +113,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if(!widget.isDeactivate)...[
-
+                        if (!widget.isDeactivate) ...[
                           const Text(
                             'To delete account, enter below detail:',
                             style: TextStyle(
@@ -112,10 +121,42 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                             ),
                           ),
                         ],
-
                         const SizedBox(
                           height: 15,
                         ),
+                        if (widget.isDeactivate) ...[
+                          ValueListenableBuilder<String>(
+                            valueListenable: selectedDays,
+                            builder: (context, value, child) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: DropdownButton<String>(
+                                  hint: const Text(
+                                      "Select user who paid the bill"),
+                                  value: selectedDays.value,
+                                  isExpanded: true,
+                                  style: const TextStyle(color: black),
+                                  onChanged: (String? newValue) {
+                                    if (newValue != null) {
+                                      selectedDays.value = newValue;
+                                    }
+                                  },
+                                  items: deactivateDaysList
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(
+                            height: 15,
+                          )
+                        ],
                         Row(
                           children: [
                             if (loginUser!.loginType.toString() ==
@@ -188,21 +229,18 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
         });
   }
 
-
   void showDeactivateAccount() {
     AlertService.showAlertMessageWithTwoBtn(
         context: context,
         alertTitle: "Are you sure you want to deactivate your account?",
         alertMsg:
-        "Your account information, including personal data and preferences, will be deleted until and unless ypu couldn't logged in.\n",
+            "Your account information, including personal data and preferences, will be deleted until and unless ypu couldn't logged in.\n",
         positiveText: "Deactivate",
         negativeText: "Cancel",
         yesTap: () {
           deleteAccount(context);
         });
   }
-
-
 
   Future<void> verifyUser(BuildContext context) async {
     try {
@@ -234,9 +272,10 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
   Future<void> deleteAccount(BuildContext context) async {
     try {
       Map<String, dynamic> apiResponse = {};
-      if(widget.isDeactivate){
-        apiResponse = await UserRepository().deactivateAccount();
-      }else{
+      if (widget.isDeactivate) {
+        apiResponse =
+            await UserRepository().deactivateAccount(days: selectedDays.value);
+      } else {
         apiResponse = await UserRepository().deleteAccount();
       }
       if (apiResponse[UiString.successText]) {

@@ -1,13 +1,12 @@
 import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:meety_dating_app/constants/constants.dart';
-import 'package:meety_dating_app/constants/ui_strings.dart';
-import 'package:meety_dating_app/data/end_points.dart';
-import 'package:meety_dating_app/data/network/api_helper.dart';
-import 'package:meety_dating_app/services/singleton_locator.dart';
+import '../../constants/constants.dart';
+import '../../constants/ui_strings.dart';
+import '../../services/singleton_locator.dart';
+import '../end_points.dart';
+import '../network/api_helper.dart';
 
 class UserRepository {
   Future<Map<String, dynamic>> updateProfile(
@@ -437,12 +436,12 @@ class UserRepository {
   }
 
   Future<Map<String, dynamic>> deactivateAccount(
-      {String? password, String? email}) async {
+      {String? password, String? email, String? days}) async {
     try {
       Either<String, Response?> response =
           await sl<ApiHelper>().postCallWithoutHeader(
         api: EndPoints.DELETE_ACCOUNT_API,
-        data: {'delete_status': Constants.deactivate},
+        data: {'delete_status': Constants.deactivate, "days": days},
       );
       return response.fold((l) {
         return UiString.fixFailResponse(errorMsg: l);

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:meety_dating_app/constants/enums.dart';
-import 'package:meety_dating_app/constants/ui_strings.dart';
-import 'package:meety_dating_app/data/repository/user_repo.dart';
-import 'package:meety_dating_app/models/user.dart';
-import 'package:meety_dating_app/services/shared_pref_manager.dart';
-import 'package:meety_dating_app/services/singleton_locator.dart';
+import '../constants/enums.dart';
+import '../constants/ui_strings.dart';
+import '../data/repository/user_repo.dart';
+import '../models/user.dart';
+import '../services/shared_pref_manager.dart';
+import '../services/singleton_locator.dart';
 
 class LoginUserProvider extends ChangeNotifier {
   User? _loginUser;
@@ -42,8 +42,7 @@ class LoginUserProvider extends ChangeNotifier {
         } else {
           _loginState = LoadingState.Loading;
         }
-      }
-      else {
+      } else {
         _loginState = LoadingState.NoInternet;
       }
       String userId =
@@ -110,6 +109,8 @@ class LoginUserProvider extends ChangeNotifier {
     if (user?.about != null && user!.about!.isNotEmpty) {
       profileCompletePer += 7;
     }
+
+    //till 54 %
     if (user?.occupation != null && user!.occupation!.isNotEmpty) {
       profileCompletePer += 10;
     }

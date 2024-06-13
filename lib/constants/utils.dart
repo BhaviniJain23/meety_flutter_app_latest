@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'dart:developer' as developer;
 import 'dart:io';
 import 'dart:math';
-
 import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:encrypt/encrypt.dart' as enc;
@@ -13,39 +12,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:flutter_html_table/flutter_html_table.dart';
-import 'package:meety_dating_app/config/routes_path.dart';
-import 'package:meety_dating_app/constants/assets.dart';
-import 'package:meety_dating_app/constants/colors.dart';
-import 'package:meety_dating_app/constants/constants_list.dart';
-import 'package:meety_dating_app/constants/enums.dart';
-import 'package:meety_dating_app/constants/size_config.dart';
-import 'package:meety_dating_app/models/user_basic_info.dart';
-import 'package:meety_dating_app/providers/like_list_provider.dart';
-import 'package:meety_dating_app/providers/subscription_provider.dart';
-import 'package:meety_dating_app/screens/home/match_screen.dart';
-import 'package:meety_dating_app/screens/home/tabs/profile/take_picture_view.dart';
-import 'package:meety_dating_app/services/navigation_service.dart';
-import 'package:meety_dating_app/services/shared_pref_manager.dart';
-import 'package:meety_dating_app/services/singleton_locator.dart';
-import 'package:meety_dating_app/widgets/core/alerts.dart';
-import 'package:meety_dating_app/widgets/core/bottomsheets.dart';
-import 'package:meety_dating_app/widgets/core/buttons.dart';
-import 'package:meety_dating_app/widgets/core/webview.dart';
-import 'package:meety_dating_app/widgets/custom_read_more_text.dart';
-import 'package:meety_dating_app/widgets/empty_widget.dart';
-import 'package:meety_dating_app/widgets/utils/extensions.dart';
-import 'package:meety_dating_app/widgets/utils/material_color.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-
+import '../widgets/utils/extensions.dart';
+import '../widgets/utils/material_color.dart';
+import '../constants/size_config.dart';
+import '../config/routes_path.dart';
 import '../models/subscription_model.dart';
+import '../models/user_basic_info.dart';
 import '../models/user_subscription.dart';
+import '../providers/like_list_provider.dart';
 import '../providers/login_user_provider.dart';
+import '../providers/subscription_provider.dart';
+import '../screens/home/match_screen.dart';
+import '../screens/home/tabs/profile/take_picture_view.dart';
+import '../services/navigation_service.dart';
+import '../services/shared_pref_manager.dart';
+import '../services/singleton_locator.dart';
 import '../widgets/CacheImage.dart';
 import '../widgets/banner_widget.dart';
+import '../widgets/core/alerts.dart';
+import '../widgets/core/bottomsheets.dart';
+import '../widgets/core/buttons.dart';
+import '../widgets/core/webview.dart';
+import '../widgets/custom_read_more_text.dart';
+import '../widgets/empty_widget.dart';
+import 'assets.dart';
+import 'colors.dart';
+import 'constants_list.dart';
+import 'enums.dart';
 import 'ui_strings.dart';
 
 logX(dynamic msg) {
@@ -77,7 +75,7 @@ class Utils {
   static const minPhotos = 1;
   static const maxPhotos = 6;
 
-  static String keyGeneration(String id){
+  static String keyGeneration(String id) {
     var key = utf8.encode(id);
     var bytes = utf8.encode("channelId");
 
@@ -87,17 +85,20 @@ class Utils {
     return digest.toString();
   }
 
-  static String decrypt(String channelId,String encryptedData) {
+  static String decrypt(String channelId, String encryptedData) {
     String keyString = keyGeneration(channelId);
-    final key = enc.Key.fromUtf8(keyString.length > 16 ? keyString.substring(0,16) : keyString);
+    final key = enc.Key.fromUtf8(
+        keyString.length > 16 ? keyString.substring(0, 16) : keyString);
     final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
     final initVector = enc.IV.fromUtf8(keyString.substring(0, 16));
-    return encrypter.decrypt(enc.Encrypted.fromBase64(encryptedData), iv: initVector);
+    return encrypter.decrypt(enc.Encrypted.fromBase64(encryptedData),
+        iv: initVector);
   }
 
   static String encryptText(String channelId, String plainText) {
     String keyString = keyGeneration(channelId);
-    final key = enc.Key.fromUtf8(keyString.length > 16 ? keyString.substring(0,16) : keyString);
+    final key = enc.Key.fromUtf8(
+        keyString.length > 16 ? keyString.substring(0, 16) : keyString);
     final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
     final initVector = enc.IV.fromUtf8(keyString.substring(0, 16));
     enc.Encrypted encryptedData = encrypter.encrypt(plainText, iv: initVector);
@@ -1092,6 +1093,7 @@ class Utils {
         .read<SubscriptionProvider>()
         .fetchTakeSubscription(planPriceId, planId, autoRenew, isAddOns);
   }
+
   static void configLoading() {
     EasyLoading.instance
       ..indicatorType = EasyLoadingIndicatorType.fadingCircle
@@ -1152,5 +1154,22 @@ class BackgroundTimer with WidgetsBindingObserver {
     } else {
       checkTimer?.cancel();
     }
+  }
+
+  static List<String> getReportUserList() {
+    List<String> reportList = [
+      "It is spam",
+      "Nudity or sexual activity",
+      "Hate speech or symbols",
+      "Sale of illegal or regulated goods",
+      "Violence or dangerous organizations",
+      "Bullying or harassment",
+      "Intellectual property violation",
+      "Suicide, self-injury or eating disorders",
+      "Scam or fraud",
+      "False information",
+      "I just do not like i",
+    ];
+    return reportList;
   }
 }

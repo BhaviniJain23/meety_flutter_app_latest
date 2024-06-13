@@ -6,7 +6,7 @@ class EndPoints {
   //static const Live_URL = "http://vps.socialbull.co:3001/api/v1";
   // static const Live_URL = "http://104.237.3.96:3001/api/v1";
   // static const Live_URL = "https://api1.meety.in/api/v1";
-  static const Live_URL = "https://api.meety.in/api/v1";
+  static const Live_URL = "https://api1.meety.in/api/v1";
 
   //static const Live_URL = "http://192.168.0.141:3000/api/v1";
   static const LOGIN_API = "$Live_URL/login";

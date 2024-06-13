@@ -1,29 +1,29 @@
 import 'package:flutter/cupertino.dart';
-import 'package:meety_dating_app/config/routes_path.dart';
-import 'package:meety_dating_app/constants/constants.dart';
-import 'package:meety_dating_app/models/interest_model.dart';
-import 'package:meety_dating_app/screens/auth/forget_pass.dart';
-import 'package:meety_dating_app/screens/auth/login_screen.dart';
-import 'package:meety_dating_app/screens/auth/otp_screen.dart';
-import 'package:meety_dating_app/screens/auth/phone_screen.dart';
-import 'package:meety_dating_app/screens/auth/register_screen.dart';
-import 'package:meety_dating_app/screens/auth/reset_password.dart';
-import 'package:meety_dating_app/screens/home/home_screen.dart';
-import 'package:meety_dating_app/screens/home/match_screen.dart';
-import 'package:meety_dating_app/screens/home/tabs/explore/explore_users.dart';
-import 'package:meety_dating_app/screens/home/tabs/profile/image_preview.dart';
-import 'package:meety_dating_app/screens/home/tabs/profile/profile/edit_profile.dart';
-import 'package:meety_dating_app/screens/home/tabs/profile/profile/interest_screen_old.dart';
-import 'package:meety_dating_app/screens/locations/enable_location.dart';
-import 'package:meety_dating_app/screens/locations/search_location.dart';
-import 'package:meety_dating_app/screens/notifications/notification_screen.dart';
-import 'package:meety_dating_app/screens/profile/add_photos.dart';
-import 'package:meety_dating_app/screens/profile/profile_setup_screen.dart';
-import 'package:meety_dating_app/screens/subscriptions/subscription_list.dart';
 
+import '../constants/constants.dart';
+import '../models/interest_model.dart';
+import '../screens/auth/forget_pass.dart';
+import '../screens/auth/login_screen.dart';
 import '../screens/auth/onborading.dart';
+import '../screens/auth/otp_screen.dart';
+import '../screens/auth/phone_screen.dart';
+import '../screens/auth/register_screen.dart';
+import '../screens/auth/reset_password.dart';
+import '../screens/home/home_screen.dart';
+import '../screens/home/match_screen.dart';
+import '../screens/home/tabs/explore/explore_users.dart';
+import '../screens/home/tabs/profile/image_preview.dart';
+import '../screens/home/tabs/profile/profile/edit_profile.dart';
+import '../screens/home/tabs/profile/profile/interest_screen_old.dart';
 import '../screens/home/tabs/profile/setting/block_contact_tab.dart';
+import '../screens/locations/enable_location.dart';
+import '../screens/locations/search_location.dart';
+import '../screens/notifications/notification_screen.dart';
+import '../screens/profile/add_photos.dart';
+import '../screens/profile/profile_setup_screen.dart';
+import '../screens/subscriptions/subscription_list.dart';
 import '../screens/subscriptions/subscription_purchase.dart';
+import 'routes_path.dart';
 
 class Routers {
   static Route<dynamic>? generateRoute(RouteSettings settings) {

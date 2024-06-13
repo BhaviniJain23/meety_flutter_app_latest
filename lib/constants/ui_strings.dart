@@ -209,7 +209,8 @@ class UiString {
   static const addPhotosSubCaption =
       'To get more match, pick your best photos. Make sure you are clearly visible and add at least 1 photos to continue.';
   static const basicSubCaption = 'Describe about your best';
-  static const editPhotoSubCaption = "You can change the position of images with simply dragging them.";
+  static const editPhotoSubCaption =
+      "You can change the position of images with simply dragging them.";
   static const enableLocation =
       'will allows you to see who is nearby in real-time, which can facilitate spontaneous meetups & interactions.';
   static const enableLocationSubCaption = 'Enable Location';
@@ -325,8 +326,7 @@ class UiString {
   static const notSureChild = 'Not sure yet';
   static const startingAFamily = 'Starting a Family';
   static const alreadyAParent = 'Already a Parent';
-  static const childFreeByChoice =
-      'Child-Free by Choice';
+  static const childFreeByChoice = 'Child-Free by Choice';
   static const blendedFamily =
       'Blended Family: Part of a blended family with stepchildren or shared custody. (I have children & want more)';
   static const petParent = 'Pet Parent';
@@ -471,6 +471,8 @@ class UiString {
 
   static String deleteYourCardDetails =
       "You'll be able to delete your card details at any time form your settings.";
+
+  static String days = "Days";
 
   static Future<Map<String, dynamic>> fixFailResponse(
       {String? errorMsg}) async {

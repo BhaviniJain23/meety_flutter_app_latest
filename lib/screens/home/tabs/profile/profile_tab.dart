@@ -1,36 +1,34 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:meety_dating_app/config/routes_path.dart';
-import 'package:meety_dating_app/constants/assets.dart';
-import 'package:meety_dating_app/constants/colors.dart';
-import 'package:meety_dating_app/constants/constants_list.dart';
-import 'package:meety_dating_app/constants/size_config.dart';
-import 'package:meety_dating_app/constants/ui_strings.dart';
-import 'package:meety_dating_app/constants/utils.dart';
-import 'package:meety_dating_app/models/user.dart';
-import 'package:meety_dating_app/providers/login_user_provider.dart';
-import 'package:meety_dating_app/providers/subscription_provider.dart';
-import 'package:meety_dating_app/screens/home/tabs/profile/profile/edit_profile.dart';
-import 'package:meety_dating_app/screens/home/tabs/profile/setting/setting_screen.dart';
-import 'package:meety_dating_app/screens/home/tabs/profile/setting/upgrade_plan_screen.dart';
-import 'package:meety_dating_app/screens/profile/view_profile.dart';
-import 'package:meety_dating_app/services/navigation_service.dart';
-import 'package:meety_dating_app/services/shared_pref_manager.dart';
-import 'package:meety_dating_app/services/singleton_locator.dart';
-import 'package:meety_dating_app/widgets/CacheImage.dart';
-import 'package:meety_dating_app/widgets/core/alerts.dart';
-import 'package:meety_dating_app/widgets/core/appbars.dart';
-import 'package:meety_dating_app/widgets/core/buttons.dart';
-import 'package:meety_dating_app/widgets/utils/extensions.dart';
-import 'package:meety_dating_app/widgets/utils/material_color.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:readmore/readmore.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:tuple/tuple.dart';
-
+import '../../../../config/routes_path.dart';
+import '../../../../constants/assets.dart';
+import '../../../../constants/colors.dart';
+import '../../../../constants/constants_list.dart';
+import '../../../../constants/size_config.dart';
+import '../../../../constants/ui_strings.dart';
+import '../../../../constants/utils.dart';
+import '../../../../models/user.dart';
+import '../../../../providers/login_user_provider.dart';
+import '../../../../providers/subscription_provider.dart';
+import '../../../../services/navigation_service.dart';
+import '../../../../services/shared_pref_manager.dart';
+import '../../../../services/singleton_locator.dart';
+import '../../../../widgets/CacheImage.dart';
+import '../../../../widgets/core/alerts.dart';
+import '../../../../widgets/core/appbars.dart';
+import '../../../../widgets/core/buttons.dart';
+import '../../../../widgets/utils/extensions.dart';
+import '../../../../widgets/utils/material_color.dart';
+import '../../../profile/view_profile.dart';
 import '../../../subscriptions/subscription_list.dart';
+import '../profile/profile/edit_profile.dart';
+import '../profile/setting/setting_screen.dart';
+
+import '../profile/setting/upgrade_plan_screen.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({Key? key}) : super(key: key);
@@ -47,11 +45,11 @@ class _ProfileTabState extends State<ProfileTab> {
   @override
   void initState() {
     loginUser = sl<SharedPrefsManager>().getUserDataInfo();
-    if (loginUser != null) {
+    /*if (loginUser != null) {
       log("loginUser: ${loginUser!.toJson().toString()}");
     } else {
       log("loginUser is null");
-    }
+    }*/
     super.initState();
   }
 
@@ -163,7 +161,7 @@ class _ProfileTabState extends State<ProfileTab> {
           child: Selector<LoginUserProvider, User?>(
               selector: (context, provider) => provider.user,
               builder: (context, loginUserVal, child) {
-                log("message: ${loginUserVal.toString()}");
+                // log("message: ${loginUserVal.toString()}");
                 SubscriptionProvider subscriptionProvider =
                     Provider.of(context, listen: false);
                 return Column(

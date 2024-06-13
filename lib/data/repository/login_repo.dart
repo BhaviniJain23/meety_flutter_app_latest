@@ -1,14 +1,14 @@
+import 'dart:developer';
 import 'dart:io';
-
 import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:meety_dating_app/constants/ui_strings.dart';
-import 'package:meety_dating_app/data/end_points.dart';
-import 'package:meety_dating_app/data/network/api_helper.dart';
-import 'package:meety_dating_app/services/singleton_locator.dart';
+import '../../constants/ui_strings.dart';
+import '../../services/singleton_locator.dart';
+import '../end_points.dart';
+import '../network/api_helper.dart';
 
 class AuthRepository {
   Future<Map<String, dynamic>> userLoggedIn(
@@ -65,20 +65,20 @@ class AuthRepository {
       } else {
         deviceId = (await DeviceInfoPlugin().androidInfo).id ?? '';
       }
-      Either<String, Response?> response =
-          await sl<ApiHelper>().postCallWithoutHeader(
-              api: EndPoints.SIGNUP_API,
-              data: {
-                'email': email,
-                'password': password,
-                'login_type': 0, //for normal,
-                'is_ios': Platform.isIOS ? '1' : '0',
-                'social_id': '',
-                'device_id': deviceId,
-                'phone': '',
-                'fcm_token': fcmToken ?? ''
-              },
-              headers: false);
+      Map<String, dynamic> data = {
+        'email': email,
+        'password': password,
+        'login_type': 0, //for normal,
+        'is_ios': Platform.isIOS ? '1' : '0',
+        'social_id': '',
+        'device_id': deviceId,
+        'phone': '',
+        'fcm_token': fcmToken ?? ''
+      };
+      log("data: ${data.toString()}");
+      Either<String, Response?> response = await sl<ApiHelper>()
+          .postCallWithoutHeader(
+              api: EndPoints.SIGNUP_API, data: data, headers: false);
       return response.fold((l) {
         return UiString.fixFailResponse(errorMsg: l);
       }, (r) {
