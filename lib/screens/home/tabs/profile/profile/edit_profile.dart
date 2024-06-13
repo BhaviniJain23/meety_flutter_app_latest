@@ -1,32 +1,33 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:meety_dating_app/config/routes_path.dart';
-import 'package:meety_dating_app/constants/colors.dart';
-import 'package:meety_dating_app/constants/size_config.dart';
-import 'package:meety_dating_app/constants/ui_strings.dart';
-import 'package:meety_dating_app/constants/utils.dart';
-import 'package:meety_dating_app/models/location.dart';
-import 'package:meety_dating_app/models/user.dart';
-import 'package:meety_dating_app/providers/edit_provider.dart';
-import 'package:meety_dating_app/providers/login_user_provider.dart';
-import 'package:meety_dating_app/screens/home/tabs/profile/profile/basic_info_screen.dart';
-import 'package:meety_dating_app/screens/home/tabs/profile/profile/gender_screen.dart';
-import 'package:meety_dating_app/screens/home/tabs/profile/profile/interest_screen_old.dart';
-import 'package:meety_dating_app/screens/home/tabs/profile/profile/looking_for_screen.dart';
-import 'package:meety_dating_app/screens/locations/search_location.dart';
-import 'package:meety_dating_app/screens/profile/add_photos.dart';
-import 'package:meety_dating_app/services/navigation_service.dart';
-import 'package:meety_dating_app/services/shared_pref_manager.dart';
-import 'package:meety_dating_app/services/singleton_locator.dart';
-import 'package:meety_dating_app/widgets/core/alerts.dart';
-import 'package:meety_dating_app/widgets/core/appbars.dart';
-import 'package:meety_dating_app/widgets/core/buttons.dart';
-import 'package:meety_dating_app/widgets/utils/extensions.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
-
+import '../../../../../widgets/utils/extensions.dart';
+import '../../../../../config/routes_path.dart';
+import '../../../../../constants/colors.dart';
 import '../../../../../constants/constants_list.dart';
+import '../../../../../constants/size_config.dart';
+import '../../../../../constants/ui_strings.dart';
+import '../../../../../constants/utils.dart';
+import '../../../../../models/location.dart';
+import '../../../../../models/user.dart';
+import '../../../../../providers/edit_provider.dart';
+import '../../../../../providers/login_user_provider.dart';
+import '../../../../../services/navigation_service.dart';
+import '../../../../../services/shared_pref_manager.dart';
+import '../../../../../services/singleton_locator.dart';
+import '../../../../../widgets/core/alerts.dart';
+import '../../../../../widgets/core/appbars.dart';
+import '../../../../../widgets/core/buttons.dart';
+import '../../../../locations/search_location.dart';
+import '../../../../profile/add_photos.dart';
+import 'basic_info_screen.dart';
+import 'gender_screen.dart';
 import 'interest_screen.dart';
+import 'interest_screen_old.dart';
+import 'looking_for_screen.dart';
 import 'occupation_screen.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -118,6 +119,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 final value =
                     Provider.of<EditUserProvider>(context, listen: false);
 
+                log('value.loginUser: ${value.loginUser!.toJson().toString()}');
+                log('loginUser: ${loginUser!.toJson().toString()}');
                 if (value.loginUser == loginUser) {
                   if (context
                           .read<LoginUserProvider>()
@@ -797,7 +800,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         },
                         tileColor: white,
                         leading: Padding(
-                          padding: ResponsiveDesign.only(context,right: 15),
+                          padding: ResponsiveDesign.only(context, right: 15),
                           child: const Icon(Icons.school_rounded),
                         ),
                         title: Row(
@@ -877,7 +880,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         },
                         tileColor: white,
                         leading: Padding(
-                          padding: ResponsiveDesign.only(context,right: 15),
+                          padding: ResponsiveDesign.only(context, right: 15),
                           child: const Icon(Icons.workspaces_rounded),
                         ),
                         title: Row(

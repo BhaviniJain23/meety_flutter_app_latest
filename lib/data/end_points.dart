@@ -49,6 +49,7 @@ class EndPoints {
   static const UPDATE_DISTANCE_API = "$Live_URL/user/updateDistanceRange";
   static const UPDATE_SHOW_ME_API = "$Live_URL/user/updateShowMe";
   static const UPDATE_NOTIFICATION_TYPE_API =
+      // "$Live_URL/user/updateNotificationType";
       "$Live_URL/user/updateNotificationType";
   static const VERIFY_USER_API = "$Live_URL/user/verifyDeletingUser";
   static const DELETE_ACCOUNT_API = "$Live_URL/user/deleteAccount";
