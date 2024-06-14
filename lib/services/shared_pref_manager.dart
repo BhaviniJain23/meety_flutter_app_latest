@@ -28,6 +28,7 @@ class SharedPrefsManager {
   static const String signUpPref = "signUpPref";
   static const String isSaveBoardingPref = "isSaveBoardingPref";
   static const String tokenPref = "AuthorizationToken";
+  static const String refreshTokenPref = "refreshTokenPref";
   static const String locationPrefs = "locationPrefs";
   static const String chatPrefs = "chatPrefs";
   static const String chatPrefs1 = "chatPrefs1";
@@ -58,6 +59,14 @@ class SharedPrefsManager {
 
   String getToken() {
     return _instance.getString(tokenPref) ?? '';
+  }
+
+  Future<bool> saveRefreshToken(String refreshToken) {
+    return _instance.setString(refreshTokenPref, refreshToken);
+  }
+
+  String getRefreshToken(String refreshToken) {
+    return _instance.getString(refreshTokenPref) ?? "";
   }
 
   Future<bool> saveSignUpData(Map<String, dynamic> data) async {
@@ -350,11 +359,14 @@ class SharedPrefsManager {
   void logoutUser(BuildContext? context) {
     Future.delayed(const Duration(seconds: 0), () async {
       // Clear all providers
-if(context != null){      Provider.of<HomeProvider>(context, listen: false).clearProvider();
-      Provider.of<UserChatListProvider>(context, listen: false).clearProvider();
-      Provider.of<LikeListProvider>(context, listen: false).clearProvider();
-      Provider.of<LoginUserProvider>(context, listen: false).clearProvider();
-      Provider.of<PhotosProvider>(context, listen: false).clearProvider();}
+      if (context != null) {
+        Provider.of<HomeProvider>(context, listen: false).clearProvider();
+        Provider.of<UserChatListProvider>(context, listen: false)
+            .clearProvider();
+        Provider.of<LikeListProvider>(context, listen: false).clearProvider();
+        Provider.of<LoginUserProvider>(context, listen: false).clearProvider();
+        Provider.of<PhotosProvider>(context, listen: false).clearProvider();
+      }
 
       UserRepository().logout().then((value) async {
         var isBoardingScreen = getBoardingScreen();

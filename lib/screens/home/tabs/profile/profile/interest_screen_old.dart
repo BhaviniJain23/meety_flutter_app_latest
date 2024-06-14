@@ -9,6 +9,7 @@ import 'package:meety_dating_app/constants/utils.dart';
 import 'package:meety_dating_app/data/repository/interest_repo.dart';
 import 'package:meety_dating_app/models/Languages/languages.dart';
 import 'package:meety_dating_app/models/Languages/languages.g.dart';
+import 'package:meety_dating_app/models/interest.dart';
 import 'package:meety_dating_app/providers/edit_provider.dart';
 import 'package:meety_dating_app/widgets/core/appbars.dart';
 import 'package:meety_dating_app/widgets/core/buttons.dart';
@@ -30,10 +31,11 @@ class InterestScreenOld extends StatefulWidget {
 
 class _InterestScreenOldState extends State<InterestScreenOld> {
   List<String> myList = [];
-  final List<String> list = [];
+  // final List<String> list = [];
+  List<String> list = [];
   List<String> filteredList = [];
   List<String> filtered = [];
-  List<String>nonEmptyValue = [];
+  List<String> nonEmptyValue = [];
   bool isLoading = false;
   final TextEditingController _searchController = TextEditingController();
 
@@ -47,7 +49,8 @@ class _InterestScreenOldState extends State<InterestScreenOld> {
     if (widget.isInterest) {
       InterestRepository().getInterestNameList().then((value) {
         list.clear();
-        list.addAll(value);
+        // list.addAll(value);
+        list = List.from(value);
         filteredList.clear();
         nonEmptyValue = myList.where((element) => element.isNotEmpty).toList();
         filteredList.addAll(List.from(ConstantList.interestList));
@@ -79,7 +82,8 @@ class _InterestScreenOldState extends State<InterestScreenOld> {
       appBar: AppBarX(
         title: widget.isInterest ? UiString.interest : UiString.languages,
         trailing: !widget.givenList.equals(nonEmptyValue)
-            ? TextBtnX(color: red,
+            ? TextBtnX(
+                color: red,
                 onPressed: () {
                   final provider =
                       Provider.of<EditUserProvider>(context, listen: false);
@@ -185,7 +189,8 @@ class _InterestScreenOldState extends State<InterestScreenOld> {
                     onChanged: (val) {
                       print("val:$val");
                       if (widget.isInterest) {
-                        if (val.length >= Utils.minInterestLength || val.length <= Utils.minInterestLength) {
+                        if (val.length >= Utils.minInterestLength ||
+                            val.length <= Utils.minInterestLength) {
                           if (myList.length > Utils.minInterestLength &&
                               myList.length < Utils.maxInterestLength) {
                             myList = List.from(val);

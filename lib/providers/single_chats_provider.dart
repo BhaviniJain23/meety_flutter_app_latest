@@ -145,7 +145,7 @@ class SingleChatProvider with ChangeNotifier {
           } else {
             msg = await sl<ChatRepository>().sendMessageWithPushNotification(
                 chatUser, msg.msg, 1,
-                loginUser: loggedInUser, reply: replyMessage,filePath: file);
+                loginUser: loggedInUser, reply: replyMessage, filePath: file);
           }
 
           if (msg != null) {
@@ -333,8 +333,8 @@ class SingleChatProvider with ChangeNotifier {
       required String userId,
       required String reason}) async {
     try {
-      Map<String, dynamic> apiResponse = await UserRepository()
-          .reportUser(loginUserId: loginUserId, userId: userId, reason: reason);
+      Map<String, dynamic> apiResponse =
+          await UserRepository().reportUser(userId: userId, reason: reason);
       if (apiResponse[UiString.successText]) {
         if (apiResponse[UiString.messageText] != null) {
           _message = apiResponse[UiString.messageText];

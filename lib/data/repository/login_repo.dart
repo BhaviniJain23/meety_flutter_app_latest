@@ -68,17 +68,18 @@ class AuthRepository {
       Map<String, dynamic> data = {
         'email': email,
         'password': password,
-        'login_type': 0, //for normal,
-        'is_ios': Platform.isIOS ? '1' : '0',
-        'social_id': '',
+        'login_type': '0', //for normal,
+        'is_ios': Platform.isIOS ? "1" : "0",
+        // 'social_id': '',
         'device_id': deviceId,
-        'phone': '',
+        // 'phone': '',
         'fcm_token': fcmToken ?? ''
       };
       log("data: ${data.toString()}");
       Either<String, Response?> response = await sl<ApiHelper>()
           .postCallWithoutHeader(
               api: EndPoints.SIGNUP_API, data: data, headers: false);
+      print('response: ${response}');
       return response.fold((l) {
         return UiString.fixFailResponse(errorMsg: l);
       }, (r) {

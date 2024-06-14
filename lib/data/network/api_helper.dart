@@ -9,6 +9,7 @@ import 'package:meety_dating_app/constants/enums.dart';
 import 'package:meety_dating_app/constants/ui_strings.dart';
 import 'package:meety_dating_app/constants/utils.dart';
 import 'package:meety_dating_app/data/end_points.dart';
+import 'package:meety_dating_app/models/interest.dart';
 import 'package:meety_dating_app/services/image_compress_service.dart';
 import 'package:meety_dating_app/services/internet_service.dart';
 import 'package:meety_dating_app/services/shared_pref_manager.dart';
@@ -34,9 +35,7 @@ class ApiHelper {
     // _dio = Dio(baseOptions);
   }
 
-
-   // Private method to send HTTP requests
- // Private method to send HTTP requests
+  // Private method to send HTTP requests
   static Future<Either<String, Response?>> _sendRequest(
     String method,
     String url,
@@ -46,74 +45,67 @@ class ApiHelper {
   }) async {
     try {
       // Check internet connectivity
-      bool isInternet = 
+      bool isInternet =
           await sl<InternetConnectionService>().hasInternetConnection();
       // String authToken =  sl<SharedPrefsManager>().getToken();
 
+      print(isInternet);
       if (isInternet) {
         // Prepare headers
-        Response<Map<String, dynamic>> response;
-        Map<String, dynamic> headersVal = {
-          "Content-Type": "application/json"
-        };
+        Response<Map<String, dynamic>>? response;
+        Map<String, dynamic> headersVal = {"Content-Type": "application/json"};
 
         // Send HTTP request based on the method
         if (method == 'get') {
           response = await _dio.get(
-                url,
-                options: Options(
-                  headers: headersVal,
-                ),
-              );
-        }
-        else if (method == 'put') {
+            url,
+            options: Options(
+              headers: headersVal,
+            ),
+          );
+        } else if (method == 'put') {
           response = await _dio.put(
-                url,
-                data: body,
-                options: Options(
-                  headers: headersVal,
-                ),
-              );
-        }
-        else if (method == 'delete') {
+            url,
+            data: body,
+            options: Options(
+              headers: headersVal,
+            ),
+          );
+        } else if (method == 'delete') {
           response = await _dio.delete(
-                url,
-                data: body,
-                options: Options(
-                  headers: headersVal,
-                ),
-              );
-        }
-        else {
+            url,
+            data: body,
+            options: Options(
+              headers: headersVal,
+            ),
+          );
+        } else {
           response = await _dio.post(
-                url,
-                data: body,
-                options: Options(
-                  headers: headersVal,
-                ),
-              );
+            url,
+            data: body,
+            options: Options(
+              headers: headersVal,
+            ),
+          );
         }
-        log("+++++++> ${jsonEncode(response.data)}");
 
         // Return the response data and success status
-         if (response.statusCode == 200) {
+        if (response.statusCode == 200) {
           return Right(response);
         } else {
           return Left(
-            response.data!['message'].toString(),
+            response.data!['message'].toString() ?? '',
           );
         }
-        // return response.data ?? {};
       } else {
-        // return {"error": false, "message": "No Internet"};
         return const Left(
-             "No Internet",
-          );
+          "No Internet",
+        );
       }
     } on DioException catch (e) {
-       return  Left(
-            e.toString(),
-          );
+      return Left(
+        e.toString(),
+      );
     }
   }
 
@@ -121,191 +113,21 @@ class ApiHelper {
       {required String api,
       required Map<String, dynamic> data,
       bool headers = true}) async {
-    try {
-      bool checkInternet =
-          await sl<InternetConnectionService>().hasInternetConnection();
-      if (checkInternet) {
-        Map<String, String> headersMap = {};
-        if (headers) {
-          String? token = sl<SharedPrefsManager>().getToken();
-          // headersMap["Authorization"] = token;
-          headersMap["Authorization"] = "Bearer $token";
-        }
-
-        Response response = await _dio.get(
-          api,
-          queryParameters: data,
-          options: Options(headers: headersMap),
-          onReceiveProgress: (received, total) {
-            if (total != -1) {}
-          },
-        );
-        if (response.statusCode == 200) {
-          return Right(response);
-        } else {
-          return Left(
-            response.data!['message'].toString(),
-          );
-        }
-      } else {
-        return const Left(UiString.noInternet);
-      }
-    } on DioError catch (e) {
-      if (DioErrorType.receiveTimeout == e.type ||
-          DioErrorType.connectionTimeout == e.type) {
-        return Left(UiString.timeOutError);
-      } else if (e.message?.contains('SocketException') ?? false) {
-        return left(UiString.noInternet);
-      } else if (e.response != null && e.response!.data != null) {
-        return left(
-          e.response?.data?['message'].toString() ??
-              e.message ??
-              UiString.error,
-        );
-      }
-      return left(
-        e.message ?? UiString.error,
-      );
-    } catch (e) {
-      return left(
-        e.toString(),
-      );
-    }
+    return await _sendRequest('get', api, data, isToken: headers);
   }
 
   Future<Either<String, Response?>> postCallWithoutHeader(
       {required String api,
       required Map<String, dynamic> data,
       bool headers = true}) async {
-    try {
-      bool checkInternet =
-          await sl<InternetConnectionService>().hasInternetConnection();
-
-      if (checkInternet) {
-        Map<String, String> headersMap = {};
-        if (headers) {
-          String? token = sl<SharedPrefsManager>().getToken();
-          // headersMap["Authorization"] = token;
-          headersMap["Authorization"] = "Bearer $token";
-        }
-
-        Response response = await _dio.post(
-          api,
-          data: data,
-          options: Options(
-              contentType: Headers.formUrlEncodedContentType,
-              headers: headersMap),
-          onSendProgress: (received, total) {
-            if (total != -1) {
-              if (kDebugMode) {}
-            }
-          },
-          onReceiveProgress: (received, total) {
-            if (total != -1) {
-              if (kDebugMode) {}
-            }
-          },
-        );
-
-        if (response.statusCode == 200) {
-          return Right(response);
-        } else {
-          return Left(
-            response.data!['message'].toString(),
-          );
-        }
-      } else {
-        return const Left(UiString.noInternet);
-      }
-    } on DioError catch (e) {
-      if (DioErrorType.receiveTimeout == e.type ||
-          DioErrorType.connectionTimeout == e.type) {
-        return Left(UiString.timeOutError);
-      } else if (e.message?.contains('SocketException') ?? false) {
-        return left(UiString.noInternet);
-      } else if (e.response != null && e.response!.data != null) {
-        return left(
-          e.response?.data?['message'].toString() ??
-              e.message ??
-              UiString.error,
-        );
-      }
-      return left(
-        e.message ?? UiString.error,
-      );
-    } catch (e) {
-      log("EE:$api\n${e.toString()}");
-
-      return left(
-        e.toString(),
-      );
-    }
+    return await _sendRequest('post', api, data, isToken: headers);
   }
 
   Future<Either<String, Response?>> putCallWithoutHeader(
       {required String api,
       required Map<String, dynamic> data,
       bool headers = true}) async {
-    try {
-      bool checkInternet =
-          await sl<InternetConnectionService>().hasInternetConnection();
-      if (checkInternet) {
-        Map<String, String> headersMap = {};
-        if (headers) {
-          String? token = sl<SharedPrefsManager>().getToken();
-          // headersMap["Authorization"] = token;
-          headersMap["Authorization"] = "Bearer ${token}";
-        }
-
-        Response response = await _dio.put(
-          api,
-          data: data,
-          options: Options(
-              contentType: Headers.formUrlEncodedContentType,
-              headers: headersMap),
-          onSendProgress: (received, total) {
-            if (total != -1) {}
-          },
-          onReceiveProgress: (received, total) {
-            if (total != -1) {
-              if (kDebugMode) {
-                print(
-                    'onReceiveProgress: ${(received / total * 100).toStringAsFixed(0)}%');
-              }
-            }
-          },
-        );
-        if (response.statusCode == 200) {
-          return Right(response);
-        } else {
-          return Left(
-            response.data!['message'].toString(),
-          );
-        }
-      } else {
-        return const Left(UiString.noInternet);
-      }
-    } on DioError catch (e) {
-      if (DioErrorType.receiveTimeout == e.type ||
-          DioErrorType.connectionTimeout == e.type) {
-        return Left(UiString.timeOutError);
-      } else if (e.message?.contains('SocketException') ?? false) {
-        return left(UiString.noInternet);
-      } else if (e.response != null && e.response!.data != null) {
-        return left(
-          e.response?.data?['message'].toString() ??
-              e.message ??
-              UiString.error,
-        );
-      }
-      return left(
-        e.message ?? UiString.error,
-      );
-    } catch (e) {
-      return left(
-        e.toString(),
-      );
-    }
+    return await _sendRequest('put', api, data, isToken: headers);
   }
 
   Future<Either<String, Response?>> postCallWithDioHeaderMultipart(

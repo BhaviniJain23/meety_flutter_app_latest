@@ -202,54 +202,58 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> register() async {
-    try {
-      if (_formKey.currentState!.validate()) {
-        FocusScope.of(context).unfocus(); //to hide the keyboard - if an
-        _isApiCall.value = true;
-        bool isInternet =
-            await sl<InternetConnectionService>().hasInternetConnection();
-        if (isInternet) {
-          Map<String, dynamic> apiResponse = await AuthRepository()
-              .userSignedUp(
-                  email: _emailController.text, password: _passController.text);
+    // try {
+    if (_formKey.currentState!.validate()) {
+      FocusScope.of(context).unfocus(); //to hide the keyboard - if an
+      // _isApiCall.value = true;
+      bool isInternet =
+          await sl<InternetConnectionService>().hasInternetConnection();
+      if (isInternet) {
+        Map<String, dynamic> apiResponse = await AuthRepository().userSignedUp(
+            email: _emailController.text, password: _passController.text);
 
-          if (apiResponse[UiString.successText]) {
-            if (apiResponse[UiString.dataText] != null) {
-              if ((apiResponse[UiString.dataText] as Map)
-                  .containsKey("token")) {
-                await sl<SharedPrefsManager>()
-                    .saveToken(apiResponse[UiString.dataText]['token']);
-              }
-              Future.delayed(const Duration(seconds: 0), () {
-                context.showSnackBar(apiResponse[UiString.messageText]);
-                _navigationService.navigateTo(RoutePaths.otpVerification,
-                    arguments: {
-                      'email': _emailController.text,
-                      'isFromForgotPassword': false
-                    });
-              });
-            } else {
-              Future.delayed(const Duration(seconds: 0), () {
-                context.showSnackBar(apiResponse[UiString.messageText]);
-              });
-            }
-          } else {
-            Future.delayed(const Duration(seconds: 0), () {
-              context.showSnackBar(apiResponse[UiString.messageText]);
-            });
-          }
-        } else {
-          Future.delayed(const Duration(seconds: 0), () {
-            context.showSnackBar(UiString.noInternet);
-          });
-        }
+        // if (apiResponse[UiString.successText]) {
+        //   if (apiResponse[UiString.dataText] != null) {
+        //     if ((apiResponse[UiString.dataText] as Map)
+        //         .containsKey("access_token")) {
+        //       await sl<SharedPrefsManager>()
+        //           .saveToken(apiResponse[UiString.dataText]['access_token']);
+        //     }
+        //     if ((apiResponse[UiString.dataText] as Map)
+        //         .containsKey("refresh_token")) {
+        //       await sl<SharedPrefsManager>().saveRefreshToken(
+        //           apiResponse[UiString.dataText]['refresh_token']);
+        //     }
+        //     Future.delayed(const Duration(seconds: 0), () {
+        //       context.showSnackBar(apiResponse[UiString.messageText]);
+        //       _navigationService.navigateTo(RoutePaths.otpVerification,
+        //           arguments: {
+        //             'email': _emailController.text,
+        //             'isFromForgotPassword': false
+        //           });
+        //     });
+        //   } else {
+        //     Future.delayed(const Duration(seconds: 0), () {
+        //       context.showSnackBar(apiResponse[UiString.messageText]);
+        //     });
+        //   }
+        // } else {
+        //   Future.delayed(const Duration(seconds: 0), () {
+        //     context.showSnackBar(apiResponse[UiString.messageText]);
+        //   });
+        // }
+      } else {
+        Future.delayed(const Duration(seconds: 0), () {
+          context.showSnackBar(UiString.noInternet);
+        });
       }
-    } on Exception {
-      if (kDebugMode) {
-        // print("On register:$e");
-      }
-    } finally {
-      _isApiCall.value = false;
     }
+    // } on Exception {
+    //   if (kDebugMode) {
+    //     // print("On register:$e");
+    //   }
+    // } finally {
+    //   _isApiCall.value = false;
+    // }
   }
 }

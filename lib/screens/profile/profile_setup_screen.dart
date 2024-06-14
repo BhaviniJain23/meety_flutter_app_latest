@@ -15,6 +15,7 @@ import 'package:meety_dating_app/constants/constants_list.dart';
 import 'package:meety_dating_app/constants/ui_strings.dart';
 import 'package:meety_dating_app/data/repository/user_repo.dart';
 import 'package:meety_dating_app/models/gender_model.dart';
+import 'package:meety_dating_app/models/interest.dart';
 import 'package:meety_dating_app/models/user.dart';
 import 'package:meety_dating_app/screens/profile/widgets/custom_cards.dart';
 import 'package:meety_dating_app/services/internet_service.dart';
@@ -59,7 +60,7 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _aboutController = TextEditingController();
   final TextEditingController searchEducation = TextEditingController();
-  List<String> allInterests = ['Select One'];
+  List<Interest> allInterests = [Interest.empty()];
 
   final ValueNotifier<List<EducationModel>> mainList = ValueNotifier([]);
   final ValueNotifier<List<EducationModel>> filteredLists = ValueNotifier([]);
@@ -71,8 +72,8 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
   final ValueNotifier<List<LookingFor>> lookingForList = ValueNotifier([]);
   final ValueNotifier<List<FuturePlan>> futurePlans = ValueNotifier([]);
   final ValueNotifier<List<Education>> educationList = ValueNotifier([]);
-  final ValueNotifier<List<String>> myInterestList = ValueNotifier([]);
-  final ValueNotifier<List<String>> filteredList = ValueNotifier([]);
+  final ValueNotifier<List<Interest>> myInterestList = ValueNotifier([]);
+  final ValueNotifier<List<Interest>> filteredList = ValueNotifier([]);
   final TextEditingController _searchController = TextEditingController();
 
   final ValueNotifier<bool> isGenderVisible = ValueNotifier(true);
@@ -131,8 +132,10 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
 
     allInterests.clear();
     filteredList.value.clear();
-    allInterests = List.from(ConstantList.interestList);
-    filteredList.value = List.from(ConstantList.interestList);
+    allInterests =
+        List.from(ConstantList.interestList.map((e) => Interest.fromJson(e)));
+    filteredList.value =
+        List.from(ConstantList.interestList.map((e) => Interest.fromJson(e)));
 
     setInitialValue();
 
@@ -445,7 +448,9 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
     }
     if (data.containsKey("interest") &&
         data['interest'].toString().isNotEmpty) {
-      myInterestList.value = data['interest'].toString().split(",");
+      // myInterestList.value = data['interest'].toString().split(",");
+      d.log('interest: ${data['interest']}');
+      // myInterestList.value = List<Interest>.from(data['interest'].map(e) => Interest.from(e));
     } else {
       myInterestList.value = List.from([]);
     }
@@ -518,15 +523,6 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
           btnEnable.value = false;
         }
         break;
-      // case 2:
-      //   int selectedIndex =
-      //   showMeList.value.indexWhere((element) => element.isSelected);
-      //   if (selectedIndex != -1) {
-      //     btnEnable.value = true;
-      //   } else if (btnEnable.value) {
-      //     btnEnable.value = false;
-      //   }
-      //   break;
 
       case 2:
         int selectedIndex =
@@ -559,7 +555,7 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
         d.log("condition: ${btnEnable.value}");
         d.log("myInterestList.value: ${myInterestList.value}");
         if (myInterestList.value.length >= Utils.minInterestLength ||
-            myInterestList.value.length == 1) {
+            myInterestList.value.isEmpty) {
           btnEnable.value = true;
         } else if (btnEnable.value) {
           btnEnable.value = false;
@@ -1053,6 +1049,14 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
     );
   }
 
+  Type getChipType(final values) {
+    if (values[0] == 3) {
+      return String;
+    } else {
+      return Interest;
+    }
+  }
+
   Widget interestInfo() {
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
@@ -1111,10 +1115,10 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
             title: TextField(
               controller: _searchController,
               onChanged: (value) {
-                List<String> temp = [];
+                List<Interest> temp = [];
                 if (value.trim().isNotEmpty) {
                   temp = allInterests
-                      .where((element) => element
+                      .where((element) => element.interest
                           .toLowerCase()
                           .contains(value.trim().toLowerCase()))
                       .toList();
@@ -1172,7 +1176,7 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
             child: MultiValueListenableBuilder(
                 valueListenables: [myInterestList, filteredList],
                 builder: (context, values, _) {
-                  return ChipsChoice<String>.multiple(
+                  return ChipsChoice<dynamic>.multiple(
                     value: values[0],
                     wrapped: true,
                     padding: const EdgeInsets.only(top: 5, bottom: 5, left: 5),
@@ -1186,13 +1190,12 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
                       }
                       filteredList.value = List.from(filteredList.value
                           .sortBySelected(myInterestList.value));
-
                       checkBtnValidation();
                     },
-                    choiceItems: C2Choice.listFrom<String, String>(
-                      source: values[1],
-                      value: (i, v) => v,
-                      label: (i, v) => v,
+                    choiceItems: C2Choice.listFrom<Interest, Interest>(
+                      source: List.from(values[1]),
+                      value: (index, item) => item,
+                      label: (index, item) => item.interest,
                     ),
                     choiceBuilder: (C2Choice choice, index) {
                       return InkWell(
@@ -1200,6 +1203,7 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
                           choice.select!(!choice.selected);
                         },
                         child: Container(
+                          key: ValueKey(choice.value.toString()),
                           width: (context.width * 0.44),
                           decoration: BoxDecoration(
                             color: white,

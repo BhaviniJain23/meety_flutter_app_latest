@@ -9,6 +9,7 @@ import 'package:meety_dating_app/constants/utils.dart';
 import 'package:meety_dating_app/data/repository/interest_repo.dart';
 import 'package:meety_dating_app/models/Languages/languages.dart';
 import 'package:meety_dating_app/models/Languages/languages.g.dart';
+import 'package:meety_dating_app/models/interest.dart';
 import 'package:meety_dating_app/providers/edit_provider.dart';
 import 'package:meety_dating_app/widgets/core/appbars.dart';
 import 'package:meety_dating_app/widgets/core/buttons.dart';
@@ -21,7 +22,7 @@ class InterestScreen extends StatefulWidget {
   const InterestScreen(
       {Key? key, required this.givenList, this.isInterest = true})
       : super(key: key);
-  final List<String> givenList;
+  final List<Interest> givenList;
   final bool isInterest;
 
   @override
@@ -29,9 +30,9 @@ class InterestScreen extends StatefulWidget {
 }
 
 class _InterestScreenState extends State<InterestScreen> {
-  List<String> myList = [];
-  final List<String> list = [];
-  List<String> filteredList = [];
+  List<Interest> myList = [];
+  final List<Interest> list = [];
+  List<Interest> filteredList = [];
   bool isLoading = false;
   final TextEditingController _searchController = TextEditingController();
 
@@ -47,17 +48,16 @@ class _InterestScreenState extends State<InterestScreen> {
         list.clear();
         list.addAll(value);
 
-        List<String> nonEmptyValue =
-            myList.where((element) => element.isNotEmpty).toList();
+        // List<Interest> nonEmptyValue = myList;
 
         filteredList.clear();
         // Add non-empty interest names from ConstantList.interestList
-        filteredList.addAll(
-            ConstantList.interestList.where((element) => element.isNotEmpty));
+        filteredList.addAll(List.from(
+            (ConstantList.interestList).map((e) => Interest.fromJson(e))));
         // Add interest names from myList and widget.givenList
         filteredList.addAll(list.where((element) =>
-            nonEmptyValue.contains(element) ||
-            widget.givenList.contains(element)));
+            myList.contains(element.id) ||
+            widget.givenList.contains(element.id)));
 
         filteredList = List.from(filteredList.sortBySelected(myList));
 
@@ -65,49 +65,19 @@ class _InterestScreenState extends State<InterestScreen> {
           isLoading = false;
         });
       });
-      // InterestRepository().getInterestNameList().then((value) {
-      //   list.clear();
-      //   list.addAll(value);
-      //   filteredList.clear();
-      //   List<String> nonEmptyValue =
-      //       myList.where((element) => element.isNotEmpty).toList();
-      //   filteredList.addAll(List.from(ConstantList.interestList));
-      //   filteredList.insertAll(
-      //       0,
-      //       widget.givenList.where(
-      //           (element) => !ConstantList.interestList.contains(element)));
-      //   filteredList = List.from(filteredList.sortBySelected(myList));
-      //   isLoading = false;
-      //   setState(() {});
-      // });
-      // InterestRepository().getInterestNameList().then((value) {
-      //   list.clear();
-      //   list.addAll(value);
-      //   filteredList.clear();
-      //   List<String> nonEmptyValue =
-      //       myList.where((element) => element.isNotEmpty).toList();
-      //   print(nonEmptyValue);
-      //   filteredList.addAll(List.from(list.where((element) =>
-      //       nonEmptyValue.contains(element) ||
-      //       widget.givenList.contains(element))));
-      //   filteredList = List.from(filteredList.sortBySelected(myList));
-      //   print(nonEmptyValue);
-      //   setState(() {
-      //     isLoading = false;
-      //   });
-      // });
     } else {
       list.clear();
-      list.addAll(Languages.defaultLanguages.map((e) => e.name).toList());
+      list.addAll(Languages.defaultLanguages.map((e) => e.name).toList()
+          as List<Interest>);
       // Set filteredList to the default language names initially
       filteredList.clear();
       filteredList.addAll(list);
       // Filter out empty strings and add non-empty values to nonEmptyValue list
-      List<String> nonEmptyValue =
-          myList.where((element) => element.isNotEmpty).toList();
+      // List<Interest> nonEmptyValue =
+      //     myList.where((element) => element.isNotEmpty).toList();
       // Update filteredList with non-empty values
-      filteredList = List.from(
-          filteredList.where((element) => nonEmptyValue.contains(element)));
+      filteredList =
+          List.from(filteredList.where((element) => myList.contains(element)));
       // Sort filteredList by selected items
       filteredList = List.from(filteredList.sortBySelected(myList));
       // Set isLoading to false when data is loaded
@@ -125,14 +95,15 @@ class _InterestScreenState extends State<InterestScreen> {
       appBar: AppBarX(
         title: widget.isInterest ? UiString.interest : UiString.languages,
         trailing: !widget.givenList.equals(myList)
-            ? TextBtnX(color: red,
+            ? TextBtnX(
+                color: red,
                 onPressed: () {
                   // Update interest or languages when done button is pressed
                   final provider =
                       Provider.of<EditUserProvider>(context, listen: false);
                   // Remove empty strings from myList before updating
-                  List<String> nonEmptyValue =
-                      myList.where((element) => element.isNotEmpty).toList();
+                  List<Interest> nonEmptyValue =
+                      myList.where((element) => element.id != -1).toList();
                   if (widget.isInterest) {
                     provider.updateInterest(nonEmptyValue.join(","));
                   } else {
@@ -159,7 +130,7 @@ class _InterestScreenState extends State<InterestScreen> {
                 onChanged: (value) {
                   if (widget.isInterest) {
                     if (value.trim().isNotEmpty) {
-                      var temp = list.where((element) => element
+                      var temp = list.where((element) => element.interest
                           .toLowerCase()
                           .contains(value.trim().toLowerCase()));
                       setState(() {
@@ -229,12 +200,14 @@ class _InterestScreenState extends State<InterestScreen> {
               ),
               if (!isLoading) ...[
                 if (filteredList.isNotEmpty) ...[
-                  ChipsChoice<String>.multiple(
+                  ChipsChoice<Interest>.multiple(
                     value: myList,
                     wrapped: true,
                     padding: const EdgeInsets.all(5),
                     onChanged: (val) {
-                      val = val.where((element) => element.isNotEmpty).toList();
+                      val = val
+                          .where((element) => element.interest.isNotEmpty)
+                          .toList();
                       print("val:$val");
                       if (widget.isInterest) {
                         if (val.isEmpty ||
@@ -267,10 +240,10 @@ class _InterestScreenState extends State<InterestScreen> {
 
                       setState(() {});
                     },
-                    choiceItems: C2Choice.listFrom<String, String>(
+                    choiceItems: C2Choice.listFrom<Interest, Interest>(
                       source: filteredList,
                       value: (i, v) => v,
-                      label: (i, v) => v,
+                      label: (i, v) => v.interest,
                     ),
                     choiceBuilder: (C2Choice choice, index) {
                       return choice.label.isNotEmpty

@@ -81,11 +81,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) {
           return PhotosProvider();
         }),
-        ChangeNotifierProvider(
-          create: (_) {
-            return HomeProvider();
-          },
-        ),
+        ChangeNotifierProvider(create: (_) {
+          return HomeProvider();
+        }),
         ChangeNotifierProvider(create: (_) {
           return sl<LikeListProvider>();
         }),
@@ -135,7 +133,6 @@ class MyApp extends StatelessWidget {
           primaryColorLight: red,
           primaryColorDark: red,
           checkboxTheme: CheckboxThemeData(
-
             fillColor: MaterialStateProperty.resolveWith((states) =>
                 states.contains(MaterialState.selected) ? red : white),
           ),

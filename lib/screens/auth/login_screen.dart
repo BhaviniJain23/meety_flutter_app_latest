@@ -220,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   password: _passController.text,
                   loginType: '0',
                   socialId: '');
-          log("apiResponseL: ${apiResponse.toString()}");
+          log("login apiResponse: ${apiResponse.toString()}");
           if (apiResponse[UiString.successText]) {
             if (apiResponse[UiString.dataText] != null) {
               if ((apiResponse[UiString.dataText] as Map)
@@ -253,20 +253,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   currentDeviceId == userLastDeviceId) {
                 if (user.dob != null && user.dob!.isNotEmpty) {
                   if (user.images != null && user.images!.isEmpty) {
+                    log("Nav to images");
                     _navigationService.navigateTo(RoutePaths.addPhotos,
                         withPushAndRemoveUntil: true);
                   } else {
+                    log("Nav to location !!");
                     // context.showSnackBar(apiResponse[UiString.messageText]);
                     _navigationService.navigateTo(RoutePaths.enableLocation,
                         withPushAndRemoveUntil: true, arguments: true);
                   }
                 } else {
+                  log("Nav to boardingProfile");
                   _navigationService.navigateTo(
                     RoutePaths.boardingProfile,
                     withPushAndRemoveUntil: true,
                   );
                 }
               } else {
+                log("Nav to otpVerification");
                 Future.delayed((Duration.zero), () {
                   _navigationService.navigateTo(RoutePaths.otpVerification,
                       arguments: {

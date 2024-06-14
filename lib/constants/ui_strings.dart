@@ -26,6 +26,7 @@ class UiString {
   static final normalizationRegEx = RegExp('-|_');
   static const space = ' ';
   static const error = 'Something went wrong!';
+  static const invalidAccessToken = 'invalid Access Token!';
   static const nothingFound = 'No data found!';
   static const noJobsYet = 'No Jobs Yet!';
   static const noInternet = 'Oops, no internet connection';

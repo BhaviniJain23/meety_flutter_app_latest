@@ -181,16 +181,12 @@ class UserRepository {
   }
 
   Future<Map<String, dynamic>> reportUser(
-      {required String userId,
-      required String loginUserId,
-      required String reason}) async {
+      {required String userId, required String reason}) async {
     try {
       Either<String, Response?> response = await sl<ApiHelper>()
-          .postCallWithoutHeader(api: EndPoints.POST_REPORT_USER_API, data: {
-        "user_id": loginUserId,
-        "reported_user_id": userId,
-        "report_reason": reason
-      });
+          .postCallWithoutHeader(
+              api: EndPoints.POST_REPORT_USER_API,
+              data: {"reported_user_id": userId, "report_reason": reason});
       return response.fold((l) {
         return UiString.fixFailResponse(errorMsg: l);
       }, (r) {
@@ -369,24 +365,6 @@ class UserRepository {
       Either<String, Response?> response =
           await sl<ApiHelper>().putCallWithoutHeader(
         api: EndPoints.UPDATE_DISTANCE_API,
-        data: data,
-      );
-      return response.fold((l) {
-        return UiString.fixFailResponse(errorMsg: l);
-      }, (r) {
-        return r?.data as Map<String, dynamic>;
-      });
-    } catch (e) {
-      return UiString.fixFailResponse();
-    }
-  }
-
-  Future<Map<String, dynamic>> updateShowMe(
-      {required Map<String, dynamic> data}) async {
-    try {
-      Either<String, Response?> response =
-          await sl<ApiHelper>().putCallWithoutHeader(
-        api: EndPoints.UPDATE_SHOW_ME_API,
         data: data,
       );
       return response.fold((l) {

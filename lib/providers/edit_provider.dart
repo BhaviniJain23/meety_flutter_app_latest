@@ -594,37 +594,6 @@ class EditUserProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> updateShowMe(BuildContext context, String showMe) async {
-    try {
-      _loginUser = _loginUser?.copyWith(
-        showme: showMe,
-      );
-      Map<String, dynamic> apiResponse =
-          await UserRepository().updateShowMe(data: {
-        'user_id': _loginUser?.id.toString(),
-        'show_me': _loginUser?.showme ?? '0',
-      });
-      if (apiResponse[UiString.successText]) {
-        await sl<SharedPrefsManager>().saveUserInfo(_loginUser!);
-        loginUserProvider?.setUser(_loginUser);
-        context.read<LoginUserProvider>().profileCompleteProgress();
-
-        notifyListeners();
-        Future.delayed((Duration.zero), () {
-          context.read<HomeProvider>().fetchUsers();
-          Navigator.pop(context);
-        });
-      } else {
-        notifyListeners();
-      }
-    } catch (e) {
-      Future.delayed((Duration.zero), () {
-        context.showSnackBar(e.toString());
-      });
-      rethrow;
-    }
-  }
-
   // Future<void> updateEducations(BuildContext context, String education) async {
   //   try {
   //     _loginUser = _loginUser?.copyWith(

@@ -32,7 +32,9 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> fetchUsers(
-      {required String userId, required BuildContext context,bool refresh = false}) async {
+      {required String userId,
+      required BuildContext context,
+      bool refresh = false}) async {
     try {
       bool checkInternet =
           await sl<InternetConnectionService>().hasInternetConnection();
@@ -81,8 +83,8 @@ class UserProvider extends ChangeNotifier {
       required String userId,
       required String reason}) async {
     try {
-      Map<String, dynamic> apiResponse = await UserRepository()
-          .reportUser(loginUserId: loginUserId, userId: userId, reason: reason);
+      Map<String, dynamic> apiResponse =
+          await UserRepository().reportUser(userId: userId, reason: reason);
       if (apiResponse[UiString.successText]) {
         if (apiResponse[UiString.messageText] != null) {
           _message = apiResponse[UiString.messageText];
@@ -97,7 +99,7 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  Future<Either<String,bool>> blockUser(
+  Future<Either<String, bool>> blockUser(
       {required String loginUserId, required String userId}) async {
     try {
       Map<String, dynamic> apiResponse = await UserRepository().blockUser(
@@ -106,12 +108,11 @@ class UserProvider extends ChangeNotifier {
       if (apiResponse[UiString.successText] &&
           apiResponse[UiString.messageText] != null) {
         return const Right(true);
-      }else{
+      } else {
         return Left(apiResponse[UiString.messageText]);
       }
     } catch (_) {}
     return const Left(UiString.error);
-
   }
 
   Future<void> updateVisitorStatus(String status) async {

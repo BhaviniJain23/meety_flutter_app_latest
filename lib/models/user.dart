@@ -335,96 +335,96 @@ class User {
   factory User.fromJson(Map<String, dynamic> json,
       {bool calculateDistance = true}) {
     return User(
-        id: json["id"].toString(),
-        fname: json["fname"],
-        lname: json["lname"] ?? '',
-        email: json["email"],
-        phone: json["phone"],
-        dob: json["dob"],
-        age: json["age"] != null ? json["age"].toString() : "0",
-        gender: Utils.getGenderString(json["gender"]),
-        isGenderShow: json["is_gender_show"]?.toString() ?? "0",
-        sexOrientation: json["sex_orientation"],
-        isSexOrientationShow:
-            json["is_sex_orientation_show"]?.toString() ?? "0",
-        showme: json["showme"]?.toString() ?? '',
-        isShowMe: json["is_show_me"],
-        ageRange: json["age_range"] ?? Constants.defaultAgeRange,
-        showAgeRange: json["show_age_range"]?.toString() ??
-            '${Constants.toShowInAgeRange}',
-        about: json["about"],
-        fcmToken: json["fcm_token"],
-        isVerified: json["is_verified"]?.toString() ?? "1",
-        loginType: json["login_type"]?.toString(),
-        lookingFor: json["looking_for"] ?? '',
-        interest: json["interest"],
-        isProfileVerified: json["is_profile_verified"]?.toString() ?? '0',
-        isProfileSharable: json["is_profile_sharable"]?.toString() ?? '0',
-        zodiac: json["zodiac"] ?? '',
-        futurePlan: json["future_plan"] ?? '',
-        covidVaccine: json["covid_vaccine"] ?? '',
-        personalityType: json["personality_type"] ?? '',
-        education: json["education"] ?? '',
-        isEducationShow: json["is_education_show"]?.toString() ?? '0',
-        isOccupationShow: json["is_occupation_show"]?.toString() ?? '0',
-        occupation: json["occupation"] ?? '',
-        hometown: json["hometown"],
-        languageKnown: json["language_known"],
-        habit: json["habit"],
-        currentLat: json["current_lat"]?.toString() ?? '0',
-        currentLong: json["current_long"]?.toString() ?? '0',
-        findingLat: json["finding_lat"]?.toString() ?? '0',
-        findingLong: json["finding_long"],
-        findingDistance:
-            json["finding_distance"] ?? '${Constants.defaultMaximumDistance}',
-        token: json["token"],
-        calDistance: json["cal_distance"] != null && calculateDistance
-            ? Utils.showDistanceInMeasurement(json["cal_distance"].toString())
-            : '0',
-        imageIndex: json["image_index"] ?? 0,
-        visitedStatus: json["visited_status"]?.toString(),
-        basicDetail: json["basic_detail"],
-        notificationType: json["notification_type"]?.toString() ?? '4',
-        distance:
-            json["finding_distance"] ?? '${Constants.defaultMaximumDistance}',
-        isGlobal: json["is_global"].toString(),
-        nameUpdateAt: json["name_update_at"],
-        dobUpdateAt: json["dob_updated_at"],
-        isProfileVerifiedStatus: json["is_profile_verified_status"]?.toString(),
-        isProfileVerifiedView: json["is_profile_verified_view"]?.toString(),
-        profileVerificationReason:
-            json["profile_verification_reason"]?.toString(),
-        measure: json["measure"] != null ? json['measure'] : UiString.km,
-        showCurrent: json['show_current'] ?? true,
-        images: json["images"] != null
-            ? List<String>.from(json["images"].map((x) => x))
-            : [],
-        subscription: json["subscription"] == null
-            ? []
-            : List<UserSubscription>.from(
-                json["subscription"]!.map((x) => UserSubscription.fromJson(x))),
-        getRemainingValue: json["getRemainingValue"] == null
-            ? null
-            : GetRemainingValue.fromJson(json["getRemainingValue"]),
-        notiVisitor: json["noti_visitor"]?.toString(),
-        notiMsgRequests: json["noti_msg_request"]?.toString(),
-        notiMsgMatch: json["noti_msg_match"]?.toString(),
-        notiLike: json["noti_likes"]?.toString(),
-        notiMatch: json["noti_match"]?.toString(),
-        lastLogOut: json["last_logout"]?.toString(),
-        showOnline: json["show_online"]?.toString(),
-        showVerifiedProfile: json["show_verified_profile"]?.toString(),
-        isAutoRenew: json["is_auto_renew"]?.toString(),
-        channelId: json["channel_id"]?.toString(),
-        canMsgSend: json["can_msg_send"],
-        educationId: json["education_id"],
-        educationName: json['education_name'] ?? json['education'],
-        occupationId: json["occupation_id"],
-        deviceId: json["device_id"],
-        occupationName: json['occupation_name'] ?? json['occupation'],
-        pastSubscription: json['past_subscription'] != null
-            ? UserSubscription.fromJson(json['past_subscription'])
-            : json['past_subscription']);
+      id: json["id"].toString(),
+      fname: json["fname"],
+      lname: json["lname"] ?? '',
+      email: json["email"],
+      phone: json["phone"],
+      dob: json["dob"],
+      age: json["age"] != null ? json["age"].toString() : "0",
+      gender: Utils.getGenderString(json["gender"]),
+      isGenderShow: json["is_gender_show"]?.toString() ?? "0",
+      sexOrientation: json["sex_orientation"],
+      isSexOrientationShow: json["is_sex_orientation_show"]?.toString() ?? "0",
+      showme: json["showme"]?.toString() ?? '',
+      isShowMe: json["is_show_me"],
+      ageRange: json["age_range"] ?? Constants.defaultAgeRange,
+      showAgeRange:
+          json["show_age_range"]?.toString() ?? '${Constants.toShowInAgeRange}',
+      about: json["about"],
+      fcmToken: json["fcm_token"],
+      isVerified: json["is_verified"]?.toString() ?? "1",
+      loginType: json["login_type"]?.toString(),
+      lookingFor: json["looking_for"] ?? '',
+      interest: json["interest"],
+      isProfileVerified: json["is_profile_verified"]?.toString() ?? '0',
+      isProfileSharable: json["is_profile_sharable"]?.toString() ?? '0',
+      zodiac: json["zodiac"] ?? '',
+      futurePlan: json["future_plan"] ?? '',
+      covidVaccine: json["covid_vaccine"] ?? '',
+      personalityType: json["personality_type"] ?? '',
+      education: json["education"] ?? '',
+      isEducationShow: json["is_education_show"]?.toString() ?? '0',
+      isOccupationShow: json["is_occupation_show"]?.toString() ?? '0',
+      occupation: json["occupation"] ?? '',
+      hometown: json["hometown"],
+      languageKnown: json["language_known"],
+      habit: json["habit"],
+      currentLat: json["current_lat"]?.toString() ?? '0',
+      currentLong: json["current_long"]?.toString() ?? '0',
+      findingLat: json["finding_lat"]?.toString() ?? '0',
+      findingLong: json["finding_long"],
+      findingDistance:
+          json["finding_distance"] ?? '${Constants.defaultMaximumDistance}',
+      token: json["token"],
+      calDistance: json["cal_distance"] != null && calculateDistance
+          ? Utils.showDistanceInMeasurement(json["cal_distance"].toString())
+          : '0',
+      imageIndex: json["image_index"] ?? 0,
+      visitedStatus: json["visited_status"]?.toString(),
+      basicDetail: json["basic_detail"],
+      notificationType: json["notification_type"]?.toString() ?? '4',
+      distance:
+          json["finding_distance"] ?? '${Constants.defaultMaximumDistance}',
+      isGlobal: json["is_global"].toString(),
+      nameUpdateAt: json["name_update_at"],
+      dobUpdateAt: json["dob_updated_at"],
+      isProfileVerifiedStatus: json["is_profile_verified_status"]?.toString(),
+      isProfileVerifiedView: json["is_profile_verified_view"]?.toString(),
+      profileVerificationReason:
+          json["profile_verification_reason"]?.toString(),
+      measure: json["measure"] != null ? json['measure'] : UiString.km,
+      showCurrent: json['show_current'] ?? true,
+      images: json["images"] != null
+          ? List<String>.from(json["images"].map((x) => x))
+          : [],
+      subscription: json["subscription"] == null
+          ? []
+          : List<UserSubscription>.from(
+              json["subscription"]!.map((x) => UserSubscription.fromJson(x))),
+      getRemainingValue: json["getRemainingValue"] == null
+          ? null
+          : GetRemainingValue.fromJson(json["getRemainingValue"]),
+      notiVisitor: json["noti_visitor"]?.toString(),
+      notiMsgRequests: json["noti_msg_request"]?.toString(),
+      notiMsgMatch: json["noti_msg_match"]?.toString(),
+      notiLike: json["noti_likes"]?.toString(),
+      notiMatch: json["noti_match"]?.toString(),
+      lastLogOut: json["last_logout"]?.toString(),
+      showOnline: json["show_online"]?.toString(),
+      showVerifiedProfile: json["show_verified_profile"]?.toString(),
+      isAutoRenew: json["is_auto_renew"]?.toString(),
+      channelId: json["channel_id"]?.toString(),
+      canMsgSend: json["can_msg_send"],
+      educationId: json["education_id"],
+      educationName: json['education_name'] ?? json['education'],
+      occupationId: json["occupation_id"],
+      deviceId: json["device_id"],
+      occupationName: json['occupation_name'] ?? json['occupation'],
+      pastSubscription: (json['past_subscription'] != null)
+          ? UserSubscription.fromJson(json['past_subscription'])
+          : json['past_subscription'],
+    );
   }
 
   Map<String, dynamic> toJson() => {

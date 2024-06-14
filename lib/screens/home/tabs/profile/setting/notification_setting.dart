@@ -25,11 +25,11 @@ class NotificationSettingScreen extends StatefulWidget {
 }
 
 class _NotificationSettingScreenState extends State<NotificationSettingScreen> {
-  ValueNotifier notiVisitor = ValueNotifier("0");
-  ValueNotifier notiLike = ValueNotifier("0");
-  ValueNotifier notiMsgRequests = ValueNotifier("0");
-  ValueNotifier notiMsgMatch = ValueNotifier("0");
-  ValueNotifier notiMatch = ValueNotifier("0");
+  final ValueNotifier notiVisitor = ValueNotifier("0");
+  final ValueNotifier notiLike = ValueNotifier("0");
+  final ValueNotifier notiMsgRequests = ValueNotifier("0");
+  final ValueNotifier notiMsgMatch = ValueNotifier("0");
+  final ValueNotifier notiMatch = ValueNotifier("0");
 
   @override
   void initState() {

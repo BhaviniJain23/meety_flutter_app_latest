@@ -1,4 +1,4 @@
- // ignore_for_file: iterable_contains_unrelated_type, unnecessary_null_comparison, non_constant_identifier_names, unrelated_type_equality_checks, camel_case_types, list_remove_unrelated_type, prefer_typing_uninitialized_variables
+// ignore_for_file: iterable_contains_unrelated_type, unnecessary_null_comparison, non_constant_identifier_names, unrelated_type_equality_checks, camel_case_types, list_remove_unrelated_type, prefer_typing_uninitialized_variables
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:meety_dating_app/data/repository/block_repo.dart';
@@ -60,7 +60,6 @@ class BlockProvider extends ChangeNotifier {
       } else {
         _isSelectAll = false;
       }
-
     } finally {
       notifyListeners();
     }
@@ -130,7 +129,8 @@ class BlockProvider extends ChangeNotifier {
       List<ContactModel> tempUnblocked = [];
 
       for (var element in contacts) {
-        bool isBlocked = _blockUser.any((user) => user.pName == element.displayName);
+        bool isBlocked =
+            _blockUser.any((user) => user.pName == element.displayName);
 
         if (isBlocked) {
           tempBlocked.add(ContactModel.fromContact(element));
@@ -153,7 +153,6 @@ class BlockProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 
   // Future<void> loadContact({showLoader = true}) async {
   //   try {
@@ -206,10 +205,9 @@ class BlockProvider extends ChangeNotifier {
         if (tempList.isNotEmpty) {
           _blockNumber = List.from(tempList.map((e) {
             if (e.pNumber != null && e.pNumber.isNotEmpty) {
-              _contactsList.removeWhere(
-                  (element) {
-                    return element.phone?.contains(e.pNumber) ?? false;
-                  });
+              _contactsList.removeWhere((element) {
+                return element.phone?.contains(e.pNumber) ?? false;
+              });
             }
             if (e.pEmail != null && e.pEmail.isNotEmpty) {
               _contactsList.removeWhere(
@@ -240,12 +238,9 @@ class BlockProvider extends ChangeNotifier {
   }
 
   // same way
-  Future<void> blockUserAPICall(
-    BuildContext context,
-  {ContactModel? c}
-  ) async {
+  Future<void> blockUserAPICall(BuildContext context, {ContactModel? c}) async {
     try {
-      if(c != null){
+      if (c != null) {
         _selectedContactModel.add(c);
       }
       final apiResponse = await BlockRepository().blockUserNumber({
@@ -292,10 +287,8 @@ class BlockProvider extends ChangeNotifier {
   Future<void> unBlockAPICall(BuildContext context) async {
     try {
       final apiResponse = await BlockRepository().unBlock({
-        "p_blocked_ids": selectedContacts
-            .map((e) => e.blockedId.toString())
-            .toList()
-            .join(",")
+        "p_blocked_ids":
+            selectedContacts.map((e) => e.blockedId.toString()).toList()
       });
 
       if (apiResponse[UiString.successText]) {

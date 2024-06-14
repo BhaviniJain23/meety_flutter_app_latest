@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:meety_dating_app/models/interest.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 import '../../../../../widgets/utils/extensions.dart';
@@ -40,6 +41,7 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   String _lookingStr = '';
   String _interest = '';
+  // Interest _interest = Interest.empty();
   String _languages = '';
   String _zodiac = '';
   String _education = '';
@@ -312,7 +314,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           sl<NavigationService>().navigateTo(
                             RoutePaths.addPhotos,
                             nextScreen: InterestScreen(
-                              givenList: _interest.split(","),
+                              // givenList: _interest.split(","),
+                              givenList: List.from(ConstantList.interestList
+                                  .map((e) => Interest.fromJson(e))),
                             ),
                           );
                         },
