@@ -57,7 +57,7 @@ class AppInterceptors extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    final authToken = sl<SharedPrefsManager>().getToken() ?? "";
+    final authToken = sl<SharedPrefsManager>().getToken();
     if (authToken.isNotEmpty && options.path != EndPoints.REFRESH_TOKEN_API) {
       options.headers['Authorization'] = "Bearer $authToken";
     }
@@ -82,7 +82,7 @@ class AppInterceptors extends Interceptor {
         response.data is Map &&
         (response.data as Map).containsKey("message") &&
         (response.data as Map)['message'].toString().toLowerCase() ==
-            "jwt expired".toLowerCase()) {
+            "Invalid Authorization token".toLowerCase()) {
       // throw UnauthorizedException(err.requestOptions, err.response);
 
       final isRefreshUrlPath = response.requestOptions.path;
@@ -132,10 +132,7 @@ class AppInterceptors extends Interceptor {
         // if refresh token throw force logout here
         _requestsNeedRetry.clear();
         // sharedPreferenceController.clearAllPreferences();
-        sl<SharedPrefsManager>().removeRememberUserDataInfo();
-        sl<SharedPrefsManager>().removeUserChatInfo();
-        sl<SharedPrefsManager>().removeLocationInfo();
-        sl<SharedPrefsManager>().removeUserDataInfo();
+        sl<SharedPrefsManager>().logoutUser(null);
         // get_lib.Get.offAllNamed(Routes.ONBOARDING);
       }
     } else {
@@ -182,7 +179,6 @@ class AppInterceptors extends Interceptor {
           api: EndPoints.REFRESH_TOKEN_API,
           data: {"refreshToken": refreshToken});
 
-      print(response);
 
       if (response.toString().isNotEmpty) {
         if (response.toString().isNotEmpty) {

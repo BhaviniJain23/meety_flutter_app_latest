@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -20,7 +21,7 @@ typedef OnUploadProgressCallback = void Function(int percentage);
 class ApiHelper {
   // late final Dio _dio;
 
-  // static final dioAPI = BaseApi().dio();
+  // static final _dio = BaseApi().dio();
   static final _dio = BaseApi().dio();
 
   ApiHelper() {
@@ -31,6 +32,89 @@ class ApiHelper {
       validateStatus: (status) => true,
     );
     // _dio = Dio(baseOptions);
+  }
+
+
+   // Private method to send HTTP requests
+ // Private method to send HTTP requests
+  static Future<Either<String, Response?>> _sendRequest(
+    String method,
+    String url,
+    dynamic body, {
+    Map<String, dynamic>? headers,
+    bool isToken = true,
+  }) async {
+    try {
+      // Check internet connectivity
+      bool isInternet = 
+          await sl<InternetConnectionService>().hasInternetConnection();
+      // String authToken =  sl<SharedPrefsManager>().getToken();
+
+      if (isInternet) {
+        // Prepare headers
+        Response<Map<String, dynamic>> response;
+        Map<String, dynamic> headersVal = {
+          "Content-Type": "application/json"
+        };
+
+        // Send HTTP request based on the method
+        if (method == 'get') {
+          response = await _dio.get(
+                url,
+                options: Options(
+                  headers: headersVal,
+                ),
+              );
+        }
+        else if (method == 'put') {
+          response = await _dio.put(
+                url,
+                data: body,
+                options: Options(
+                  headers: headersVal,
+                ),
+              );
+        }
+        else if (method == 'delete') {
+          response = await _dio.delete(
+                url,
+                data: body,
+                options: Options(
+                  headers: headersVal,
+                ),
+              );
+        }
+        else {
+          response = await _dio.post(
+                url,
+                data: body,
+                options: Options(
+                  headers: headersVal,
+                ),
+              );
+        }
+        log("+++++++> ${jsonEncode(response.data)}");
+
+        // Return the response data and success status
+         if (response.statusCode == 200) {
+          return Right(response);
+        } else {
+          return Left(
+            response.data!['message'].toString(),
+          );
+        }
+        // return response.data ?? {};
+      } else {
+        // return {"error": false, "message": "No Internet"};
+        return const Left(
+             "No Internet",
+          );
+      }
+    } on DioException catch (e) {
+       return  Left(
+            e.toString(),
+          );
+    }
   }
 
   Future<Either<String, Response?>> getCallWithoutHeader(

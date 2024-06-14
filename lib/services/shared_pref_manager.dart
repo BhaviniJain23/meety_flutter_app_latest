@@ -347,14 +347,14 @@ class SharedPrefsManager {
     return _instance.getString(isSaveBoardingPref) ?? 'false';
   }
 
-  void logoutUser(BuildContext context) {
+  void logoutUser(BuildContext? context) {
     Future.delayed(const Duration(seconds: 0), () async {
       // Clear all providers
-      Provider.of<HomeProvider>(context, listen: false).clearProvider();
+if(context != null){      Provider.of<HomeProvider>(context, listen: false).clearProvider();
       Provider.of<UserChatListProvider>(context, listen: false).clearProvider();
       Provider.of<LikeListProvider>(context, listen: false).clearProvider();
       Provider.of<LoginUserProvider>(context, listen: false).clearProvider();
-      Provider.of<PhotosProvider>(context, listen: false).clearProvider();
+      Provider.of<PhotosProvider>(context, listen: false).clearProvider();}
 
       UserRepository().logout().then((value) async {
         var isBoardingScreen = getBoardingScreen();
