@@ -55,6 +55,16 @@ class ApiHelper {
         Response<Map<String, dynamic>>? response;
         Map<String, dynamic> headersVal = {"Content-Type": "application/json"};
 
+        if (isToken) {
+          String? token = sl<SharedPrefsManager>().getToken();
+          // headersMap["Authorization"] = token;
+          headersVal["Authorization"] = "Bearer $token";
+        }
+
+        log("put method !!!!!");
+        log("data: ${body.toString()}");
+        log("headersVal: ${headersVal.toString()}");
+
         // Send HTTP request based on the method
         if (method == 'get') {
           response = await _dio.get(
@@ -137,7 +147,7 @@ class ApiHelper {
     if (headers) {
       String? token = sl<SharedPrefsManager>().getToken();
       // headersMap["Authorization"] = token;
-      headersMap["Authorization"] = "Bearer ${token}";
+      headersMap["Authorization"] = "Bearer $token";
     }
     var dio = Dio();
     try {
@@ -178,6 +188,8 @@ class ApiHelper {
           }
         }
 
+        log("response: ${formData.fields.toString()}");
+        log("response: ${formData.files.toString()}");
         Response response = await dio.post(
           api,
           data: formData,
@@ -201,6 +213,7 @@ class ApiHelper {
           ),
         );
 
+        log("response: ${response.toString()}");
         if (response.statusCode == 200) {
           return Right(response);
         } else {

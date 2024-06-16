@@ -224,9 +224,9 @@ class _LoginScreenState extends State<LoginScreen> {
           if (apiResponse[UiString.successText]) {
             if (apiResponse[UiString.dataText] != null) {
               if ((apiResponse[UiString.dataText] as Map)
-                  .containsKey("token")) {
+                  .containsKey("access_token")) {
                 await sl<SharedPrefsManager>()
-                    .saveToken(apiResponse[UiString.dataText]['token']);
+                    .saveToken(apiResponse[UiString.dataText]['access_token']);
               }
               if (_isAgree.value) {
                 await sl<SharedPrefsManager>().saveRememberUserDataInfo({

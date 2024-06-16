@@ -29,7 +29,6 @@ class PhotosProvider with ChangeNotifier {
     _photos.clear();
     _loadingIndex = 1;
     notifyListeners();
-
   }
 
   void updateLoadingIndex(int value) {
@@ -64,12 +63,10 @@ class PhotosProvider with ChangeNotifier {
   }
 
   void reOrderPhoto(int oldIndex, int newIndex) {
-
     Photo imgPhoto = _photos.removeAt(oldIndex);
     _photos.insert(newIndex, imgPhoto);
     notifyListeners();
   }
-
 
   Future<void> addPhotosInDatabase(BuildContext context) async {
     try {
@@ -80,11 +77,12 @@ class PhotosProvider with ChangeNotifier {
 
       Map<String, dynamic> apiResponse =
           await UserRepository().addMultiProfilePic(data: {
-        // 'user_id': user?.id ?? '0',
-     }, images: images);
+        'user_id': user?.id ?? '0',
+      }, images: images);
 
       if (apiResponse[UiString.successText]) {
-        if (apiResponse[UiString.dataText] != null && apiResponse[UiString.dataText].containsKey('images')) {
+        if (apiResponse[UiString.dataText] != null &&
+            apiResponse[UiString.dataText].containsKey('images')) {
           user = user!.copyWith(
               images: (apiResponse[UiString.dataText]['images'] as List)
                   .map((e) => e.toString())
@@ -97,8 +95,7 @@ class PhotosProvider with ChangeNotifier {
                 context, RoutePaths.enableLocation, (route) => false,
                 arguments: true);
           });
-        }
-        else {
+        } else {
           Future.delayed(const Duration(seconds: 0), () {
             context.showSnackBar(apiResponse[UiString.messageText]);
           });
@@ -108,7 +105,6 @@ class PhotosProvider with ChangeNotifier {
           context.showSnackBar(UiString.error);
         });
       }
-
     } catch (e) {
       rethrow;
     }
@@ -121,9 +117,6 @@ class PhotosProvider with ChangeNotifier {
 
       List<String> images =
           List.from(_photos.map((e) => e.isLocal ? e.file?.path : e.url));
-
-
-
 
       Map<String, dynamic> apiResponse =
           await UserRepository().updateProfilePic(data: {
@@ -141,7 +134,6 @@ class PhotosProvider with ChangeNotifier {
           Future.delayed(const Duration(seconds: 0), () {
             final provider =
                 Provider.of<EditUserProvider>(context, listen: false);
-
 
             provider.updateImages(user?.images ?? []);
             context.showSnackBar(apiResponse[UiString.messageText]);

@@ -212,36 +212,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
         Map<String, dynamic> apiResponse = await AuthRepository().userSignedUp(
             email: _emailController.text, password: _passController.text);
 
-        // if (apiResponse[UiString.successText]) {
-        //   if (apiResponse[UiString.dataText] != null) {
-        //     if ((apiResponse[UiString.dataText] as Map)
-        //         .containsKey("access_token")) {
-        //       await sl<SharedPrefsManager>()
-        //           .saveToken(apiResponse[UiString.dataText]['access_token']);
-        //     }
-        //     if ((apiResponse[UiString.dataText] as Map)
-        //         .containsKey("refresh_token")) {
-        //       await sl<SharedPrefsManager>().saveRefreshToken(
-        //           apiResponse[UiString.dataText]['refresh_token']);
-        //     }
-        //     Future.delayed(const Duration(seconds: 0), () {
-        //       context.showSnackBar(apiResponse[UiString.messageText]);
-        //       _navigationService.navigateTo(RoutePaths.otpVerification,
-        //           arguments: {
-        //             'email': _emailController.text,
-        //             'isFromForgotPassword': false
-        //           });
-        //     });
-        //   } else {
-        //     Future.delayed(const Duration(seconds: 0), () {
-        //       context.showSnackBar(apiResponse[UiString.messageText]);
-        //     });
-        //   }
-        // } else {
-        //   Future.delayed(const Duration(seconds: 0), () {
-        //     context.showSnackBar(apiResponse[UiString.messageText]);
-        //   });
-        // }
+        if (apiResponse[UiString.successText]) {
+          if (apiResponse[UiString.dataText] != null) {
+            if ((apiResponse[UiString.dataText] as Map)
+                .containsKey("access_token")) {
+              await sl<SharedPrefsManager>()
+                  .saveToken(apiResponse[UiString.dataText]['access_token']);
+            }
+            if ((apiResponse[UiString.dataText] as Map)
+                .containsKey("refresh_token")) {
+              await sl<SharedPrefsManager>().saveRefreshToken(
+                  apiResponse[UiString.dataText]['refresh_token']);
+            }
+            Future.delayed(const Duration(seconds: 0), () {
+              context.showSnackBar(apiResponse[UiString.messageText]);
+              _navigationService.navigateTo(RoutePaths.otpVerification,
+                  arguments: {
+                    'email': _emailController.text,
+                    'isFromForgotPassword': false
+                  });
+            });
+          } else {
+            Future.delayed(const Duration(seconds: 0), () {
+              context.showSnackBar(apiResponse[UiString.messageText]);
+            });
+          }
+        } else {
+          Future.delayed(const Duration(seconds: 0), () {
+            context.showSnackBar(apiResponse[UiString.messageText]);
+          });
+        }
       } else {
         Future.delayed(const Duration(seconds: 0), () {
           context.showSnackBar(UiString.noInternet);

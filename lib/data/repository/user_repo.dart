@@ -74,6 +74,7 @@ class UserRepository {
       Either<String, Response?> response = await sl<ApiHelper>()
           .postCallWithDioHeaderMultipart(
               EndPoints.ADD_MULTI_PROFILE_API, data, images);
+      log("profile image response: ${response.toString()}");
       return response.fold((l) {
         return UiString.fixFailResponse(errorMsg: l);
       }, (r) {

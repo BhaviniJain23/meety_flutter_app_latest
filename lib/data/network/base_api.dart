@@ -25,7 +25,7 @@ class BaseApi {
     var dio = Dio(BaseOptions(
       baseUrl: EndPoints.Live_URL,
       followRedirects: false,
-      receiveTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 15),
       validateStatus: (status) => true,
     ));
     dio.interceptors.addAll({
@@ -80,7 +80,7 @@ class AppInterceptors extends Interceptor {
   Future<void> onError(
       DioException err, ErrorInterceptorHandler handler) async {
     print("+++++++onError+++++++");
-    print(err.type);
+    log("error: ${err.toString()}");
 
     print(err.response?.data.runtimeType);
     print(err.response?.data);
@@ -111,139 +111,3 @@ class AppInterceptors extends Interceptor {
     return handler.next(err);
   }
 }
-
-// Future<void> onError1(DioException err, ErrorInterceptorHandler handler) async {
-//   final response = err.response;
-//
-//   log("err: ${err.toString()}");
-//   print(err.type.toString());
-//   print(err.response.toString());
-//
-//   if (response != null &&
-//       response.data is Map &&
-//       (response.data as Map).containsKey("message") &&
-//       (response.data as Map)['message'].toString().toLowerCase() ==
-//           "Invalid Authorization token".toLowerCase()) {
-//     // throw UnauthorizedException(err.requestOptions, err.response);
-//
-//     final isRefreshUrlPath = response.requestOptions.path;
-//
-//     if (isRefreshUrlPath != EndPoints.REFRESH_TOKEN_API) {
-//       if (!_isRefreshing) {
-//         _isRefreshing = true;
-//
-//         // add request (requestOptions and handler) to queue and wait to retry later
-//         _requestsNeedRetry
-//             .add((options: response.requestOptions, handler: handler));
-//
-//         // call api refresh token
-//         final isRefreshSuccess = await _refreshToken();
-//
-//         if (isRefreshSuccess) {
-//           // refresh success, loop requests need retry
-//           for (var requestNeedRetry in _requestsNeedRetry) {
-//             // won't use await because this loop will take longer -> maybe throw: Unhandled Exception: Concurrent modification during iteration
-//             // because method _requestsNeedRetry.add() is called at the same time
-//             // final response = await dio.fetch(requestNeedRetry.options);
-//             // requestNeedRetry.handler.resolve(response);
-//             dio.fetch(requestNeedRetry.options).then((response) {
-//               requestNeedRetry.handler.resolve(response);
-//             }).catchError((_) {});
-//           }
-//
-//           _requestsNeedRetry.clear();
-//           _isRefreshing = false;
-//         } else {
-//           _requestsNeedRetry.clear();
-//           // if refresh fail, force logout user here
-//
-//           sl<SharedPrefsManager>().logoutUser(null);
-//           // sharedPreferenceController.clearAllPreferences();
-//           // get_lib.Get.offAllNamed(Routes.ONBOARDING);
-//         }
-//       } else {
-//         // if refresh flow is processing, add this request to queue and wait to retry later
-//         _requestsNeedRetry
-//             .add((options: response.requestOptions, handler: handler));
-//       }
-//     } else {
-//       // if refresh token throw force logout here
-//       _requestsNeedRetry.clear();
-//       // sharedPreferenceController.clearAllPreferences();
-//       sl<SharedPrefsManager>().logoutUser(null);
-//       // get_lib.Get.offAllNamed(Routes.ONBOARDING);
-//     }
-//   } else {
-//     log("err: ${err.toString()}");
-//     print(err.type.toString());
-//     print(err.response.toString());
-//     switch (err.type) {
-//       case DioExceptionType.connectionTimeout:
-//       case DioExceptionType.sendTimeout:
-//       case DioExceptionType.receiveTimeout:
-//         throw DeadlineExceededException(requestOptions: err.requestOptions);
-//       case DioExceptionType.badResponse:
-//         switch (err.response?.statusCode) {
-//           case 400:
-//             throw BadRequestException(
-//                 requestOptions: err.requestOptions, response: err.response);
-//           case 401:
-//             throw UnauthorizedException(
-//                 requestOptions: err.requestOptions, response: err.response);
-//           case 404:
-//             throw NotFoundException(requestOptions: err.requestOptions);
-//           case 409:
-//             throw ConflictException(
-//                 requestOptions: err.requestOptions, response: err.response);
-//           case 500:
-//             throw InternalServerErrorException(
-//                 requestOptions: err.requestOptions);
-//         }
-//         break;
-//       case DioExceptionType.cancel:
-//         break;
-//       case DioExceptionType.unknown:
-//         throw NoInternetConnectionException(requestOptions: err.requestOptions);
-//       default:
-//         break;
-//     }
-//     return handler.next(err);
-//   }
-// }
-//
-// Future<bool> _refreshToken() async {
-//   return false;
-//   // try {
-//   //   final refreshToken = sl<SharedPrefsManager>().getToken();
-//   //   final response = await ApiHelper().postCallWithoutHeader(
-//   //       api: EndPoints.REFRESH_TOKEN_API,
-//   //       data: {"refreshToken": refreshToken});
-//   //
-//   //
-//   //   log('response: ${response.toString()}');
-//   //   if (response.toString().isNotEmpty) {
-//   //     if (response.toString().isNotEmpty && response is Response) {
-//   //       Map<String, dynamic> data = response.;
-//   //       sl<SharedPrefsManager>().saveToken(response['accessToken']);
-//   //       // await sharedPreferenceController.setAccessToken({...response});
-//   //
-//   //       if (sl<SharedPrefsManager>().getToken().isNotEmpty) {
-//   //         return true;
-//   //       }
-//   //
-//   //       return false;
-//   //     } else {
-//   //       // showAppSnackBar(
-//   //       //     message: "Session Expired.Please login again.",
-//   //       //     toastType: ToastType.error);
-//   //
-//   //       return false;
-//   //     }
-//   //   } else {
-//   //     return false;
-//   //   }
-//   // } on Exception catch (error) {
-//   //   print("refresh token fail $error");
-//   //   return false;
-//   // }
-// }
