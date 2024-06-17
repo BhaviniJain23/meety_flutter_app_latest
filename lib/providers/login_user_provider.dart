@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import '../constants/enums.dart';
 import '../constants/ui_strings.dart';
@@ -51,6 +53,8 @@ class LoginUserProvider extends ChangeNotifier {
       notifyListeners();
       Map<String, dynamic> apiResponse =
           await UserRepository().getUserProfile(userId: userId);
+      log("getUserProfile apiResponse: ${apiResponse.toString()}");
+
       if (apiResponse[UiString.successText]) {
         if (apiResponse[UiString.dataText] != null) {
           _loginState = LoadingState.Success;
@@ -63,6 +67,7 @@ class LoginUserProvider extends ChangeNotifier {
       } else {
         _loginState = LoadingState.Failure;
       }
+      log("_loginState: ${_loginState.toString()}");
     } catch (_) {
     } finally {
       profileCompleteProgress();

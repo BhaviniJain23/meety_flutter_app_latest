@@ -60,15 +60,15 @@ class _SettingScreenState extends State<SettingScreen> {
       if (loginUser!.email != null && loginUser!.email!.isNotEmpty) {
         email = loginUser!.email!;
       }
-      if (loginUser!.phone != null && loginUser!.phone!.isNotEmpty) {
+      if (loginUser!.phone != null &&
+          loginUser!.phone!.isNotEmpty &&
+          loginUser!.phone.toString() != "undefined") {
         phone = loginUser!.phone!;
       }
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         user.setUser(loginUser!);
       });
     }
-    log(loginUser!.phone.toString());
-    log(loginUser!.email.toString());
   }
 
   @override
@@ -123,8 +123,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   return Card(
                     elevation: 5,
                     shadowColor: Colors.grey.withOpacity(0.2),
-                    color:Colors.white,
-                    surfaceTintColor:Colors.white,
+                    color: Colors.white,
+                    surfaceTintColor: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     child: Column(
@@ -261,12 +261,15 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),
                         ListTile(
                           onTap: () {
-                            sl<NavigationService>()
-                                .navigateTo(RoutePaths.accountSetting,
-                                    nextScreen: AccountSetting(
-                                      title: UiString.phoneText,
-                                      value: value.item5 ?? '',
-                                    ));
+                            sl<NavigationService>().navigateTo(
+                                RoutePaths.accountSetting,
+                                nextScreen: AccountSetting(
+                                  title: UiString.phoneText,
+                                  value: (value.item5 != null &&
+                                          value.item5.toString() != "undefined")
+                                      ? value.item5.toString()
+                                      : '',
+                                ));
                           },
                           tileColor: white,
                           title: Row(
@@ -283,7 +286,11 @@ class _SettingScreenState extends State<SettingScreen> {
                               ),
                               Expanded(
                                 child: Text(
-                                  value.item5 ?? '',
+                                  // value.item5 ?? '',
+                                  (value.item5 != null &&
+                                          value.item5.toString() != "undefined")
+                                      ? value.item5.toString()
+                                      : '',
                                   style: context.textTheme.bodySmall?.copyWith(
                                     fontSize: 14,
                                   ),
@@ -324,8 +331,8 @@ class _SettingScreenState extends State<SettingScreen> {
               Card(
                 elevation: 5,
                 shadowColor: Colors.grey.withOpacity(0.2),
-                color:Colors.white,
-                surfaceTintColor:Colors.white,
+                color: Colors.white,
+                surfaceTintColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 child: Padding(
@@ -399,7 +406,8 @@ class _SettingScreenState extends State<SettingScreen> {
                         height: 5,
                       ),
                       Center(
-                        child: TextBtnX(color: red,
+                        child: TextBtnX(
+                            color: red,
                             onPressed: () async {
                               final response = await sl<NavigationService>()
                                   .navigateTo(RoutePaths.searchLocation,
@@ -431,8 +439,8 @@ class _SettingScreenState extends State<SettingScreen> {
               ///Block
               Card(
                 elevation: 5,
-                color:Colors.white,
-                surfaceTintColor:Colors.white,
+                color: Colors.white,
+                surfaceTintColor: Colors.white,
                 shadowColor: Colors.grey.withOpacity(0.2),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
@@ -474,8 +482,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   return Card(
                       elevation: 5,
                       shadowColor: Colors.grey.withOpacity(0.2),
-                      color:Colors.white,
-                      surfaceTintColor:Colors.white,
+                      color: Colors.white,
+                      surfaceTintColor: Colors.white,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15)),
                       child: SwitchListTile(
@@ -513,8 +521,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   return Card(
                     elevation: 5,
                     shadowColor: Colors.grey.withOpacity(0.2),
-                    color:Colors.white,
-                    surfaceTintColor:Colors.white,
+                    color: Colors.white,
+                    surfaceTintColor: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     child: SwitchListTile(
@@ -559,8 +567,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   return Card(
                     elevation: 5,
                     shadowColor: Colors.grey.withOpacity(0.2),
-                    color:Colors.white,
-                    surfaceTintColor:Colors.white,
+                    color: Colors.white,
+                    surfaceTintColor: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     child: SwitchListTile(
@@ -574,18 +582,28 @@ class _SettingScreenState extends State<SettingScreen> {
                           borderRadius: BorderRadius.circular(15)),
                       value: online == "1" ? true : false,
                       onChanged: (newVal) {
-                        final subscriptionPlan = sl<SharedPrefsManager>()
-                            .getUserDataInfo()!
-                            .pastSubscription;
-                        if (subscriptionPlan?.planId == null) {
-                          // AlertService.premiumPopUpService(context);
+                        AlertService.showAlertMessageWithTwoBtn(
+                            context: context,
+                            alertTitle: "Change activity status?",
+                            alertMsg:
+                                "Are you sure you want to change activity status?",
+                            positiveText: "Update",
+                            negativeText: "Cancel",
+                            yesTap: () {
+                              final subscriptionPlan = sl<SharedPrefsManager>()
+                                  .getUserDataInfo()!
+                                  .pastSubscription;
+                              if (subscriptionPlan?.planId == null) {
+                                // AlertService.premiumPopUpService(context);
 
-                          Utils.printingAllPremiumInfo(context,
-                              isForOnlineOfflineStatus: true);
-                        } else {
-                          Provider.of<EditUserProvider>(context, listen: false)
-                              .updateShowOnlineStatus(context, newVal);
-                        }
+                                Utils.printingAllPremiumInfo(context,
+                                    isForOnlineOfflineStatus: true);
+                              } else {
+                                Provider.of<EditUserProvider>(context,
+                                        listen: false)
+                                    .updateShowOnlineStatus(context, newVal);
+                              }
+                            });
                       },
                     ),
                   );
@@ -617,8 +635,8 @@ class _SettingScreenState extends State<SettingScreen> {
                     },
                     child: Card(
                         elevation: 5,
-                        color:Colors.white,
-                        surfaceTintColor:Colors.white,
+                        color: Colors.white,
+                        surfaceTintColor: Colors.white,
                         shadowColor: Colors.grey.withOpacity(0.2),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)),
@@ -684,8 +702,8 @@ class _SettingScreenState extends State<SettingScreen> {
                     },
                     child: Card(
                         elevation: 5,
-                        color:Colors.white,
-                        surfaceTintColor:Colors.white,
+                        color: Colors.white,
+                        surfaceTintColor: Colors.white,
                         shadowColor: Colors.grey.withOpacity(0.2),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)),
@@ -758,8 +776,8 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
                 Card(
                   elevation: 5,
-                  color:Colors.white,
-                  surfaceTintColor:Colors.white,
+                  color: Colors.white,
+                  surfaceTintColor: Colors.white,
                   shadowColor: Colors.grey.withOpacity(0.2),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
@@ -807,8 +825,8 @@ class _SettingScreenState extends State<SettingScreen> {
                 builder: (context, value, child) {
                   return Card(
                     elevation: 5,
-                    color:Colors.white,
-                    surfaceTintColor:Colors.white,
+                    color: Colors.white,
+                    surfaceTintColor: Colors.white,
                     shadowColor: Colors.grey.withOpacity(0.2),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
@@ -857,8 +875,8 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
               Card(
                 elevation: 5,
-                color:Colors.white,
-                surfaceTintColor:Colors.white,
+                color: Colors.white,
+                surfaceTintColor: Colors.white,
                 shadowColor: Colors.grey.withOpacity(0.2),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
@@ -897,8 +915,8 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
               Card(
                 elevation: 5,
-                color:Colors.white,
-                surfaceTintColor:Colors.white,
+                color: Colors.white,
+                surfaceTintColor: Colors.white,
                 shadowColor: Colors.grey.withOpacity(0.2),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
@@ -1211,7 +1229,8 @@ class _SettingScreenState extends State<SettingScreen> {
                 const SizedBox(
                   height: 5,
                 ),
-                RangeSlider(activeColor: red,
+                RangeSlider(
+                  activeColor: red,
                   values: tempAgeRange,
                   min: 18,
                   max: 100,
@@ -1402,7 +1421,8 @@ class _SettingScreenState extends State<SettingScreen> {
                 const SizedBox(
                   height: 5,
                 ),
-                Slider(activeColor: red,
+                Slider(
+                  activeColor: red,
                   value: tempDistance,
                   min: showKm == true ? 40 : 24,
                   max: int.parse(tempDistance.round().toString()) > 100

@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:http_parser/http_parser.dart' as parser;
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:mime/mime.dart' as mime;
 import 'package:flutter/foundation.dart';
 import 'package:meety_dating_app/constants/enums.dart';
 import 'package:meety_dating_app/constants/ui_strings.dart';
@@ -40,7 +41,6 @@ class ApiHelper {
     String method,
     String url,
     dynamic body, {
-    Map<String, dynamic>? headers,
     bool isToken = true,
   }) async {
     try {
@@ -61,9 +61,8 @@ class ApiHelper {
           headersVal["Authorization"] = "Bearer $token";
         }
 
-        log("put method !!!!!");
-        log("data: ${body.toString()}");
-        log("headersVal: ${headersVal.toString()}");
+        // log("data: ${body.toString()}");
+        // log("headersVal: ${headersVal.toString()}");
 
         // Send HTTP request based on the method
         if (method == 'get') {
@@ -98,6 +97,11 @@ class ApiHelper {
             ),
           );
         }
+        log("response: ${response.toString()}");
+        log("data: ${response.data.toString()}");
+        log("statusCode: ${response.statusCode.toString()}");
+        log("realUri: ${response.realUri.toString()}");
+        log("headers: ${response.headers.toString()}");
 
         // Return the response data and success status
         if (response.statusCode == 200) {
@@ -180,11 +184,20 @@ class ApiHelper {
               imageFile = File(images[i]);
             }
 
+            String mimeType = mime.lookupMimeType(imageFile.path) ?? '';
+            String mimee = mimeType.split('/')[0];
+            String type = mimeType.split('/')[1];
+
+            log("mimee: $mimee");
+            log("type: $type");
+
             MultipartFile multipartFile = await MultipartFile.fromFile(
               imageFile.path,
               filename: imageFile.path.split('/').last,
+              contentType: parser.MediaType(mimee, type),
             );
-            formData.files.add(MapEntry('image', multipartFile));
+            log("multipart file: ${imageFile.path.toString()}");
+            formData.files.add(MapEntry('file', multipartFile));
           }
         }
 

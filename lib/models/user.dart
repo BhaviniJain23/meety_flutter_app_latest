@@ -335,7 +335,7 @@ class User {
   factory User.fromJson(Map<String, dynamic> json,
       {bool calculateDistance = true}) {
     return User(
-      id: json["id"].toString(),
+      id: json["user_id"].toString(),
       fname: json["fname"],
       lname: json["lname"] ?? '',
       email: json["email"],
@@ -429,7 +429,7 @@ class User {
 
   Map<String, dynamic> toJson() => {
         "getRemainingValue": getRemainingValue?.toJson(),
-        "id": id,
+        "user_id": id,
         "fname": fname,
         "lname": lname,
         "email": email,

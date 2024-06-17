@@ -15,7 +15,7 @@ class ImageCompressService {
   }
 
   Future<File?> execVideo({OnUploadProgressCallback? onUploadProgress}) async {
-    return (await compressVideo(onUploadProgress:onUploadProgress));
+    return (await compressVideo(onUploadProgress: onUploadProgress));
   }
 
   String _timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
@@ -26,42 +26,36 @@ class ImageCompressService {
       minHeight: 1080,
       minWidth: 1080,
       quality: 96,
-      format: CompressFormat.webp,
+      format: CompressFormat.png,
     );
     final dir = await path_provider.getTemporaryDirectory();
-    final targetPath = "${dir.absolute.path}/${_timestamp()}.webp";
+    final targetPath = "${dir.absolute.path}/${_timestamp()}.png";
     final File file1 = await File(targetPath).create();
     await file1.writeAsBytes(result);
     return file1;
   }
 
-   Future<File?> compressVideo({OnUploadProgressCallback? onUploadProgress}) async {
-     var compressedVideo =  light.LightCompressor();
-     if(onUploadProgress != null){
+  Future<File?> compressVideo(
+      {OnUploadProgressCallback? onUploadProgress}) async {
+    var compressedVideo = light.LightCompressor();
+    if (onUploadProgress != null) {
       compressedVideo.onProgressUpdated.listen((event) {
         onUploadProgress(event.toInt());
       });
     }
     light.Result resullt = await compressedVideo.compressVideo(
-        path: file.path,
-        android: light.AndroidConfig(
-          isSharedStorage: false
-        ),
-        ios: light.IOSConfig(
-          saveInGallery: false
-        ),
-        video: light.Video(videoName: file.path.split("/").last),
-        videoQuality: light.VideoQuality.high,
-        isMinBitrateCheckEnabled: false,
+      path: file.path,
+      android: light.AndroidConfig(isSharedStorage: false),
+      ios: light.IOSConfig(saveInGallery: false),
+      video: light.Video(videoName: file.path.split("/").last),
+      videoQuality: light.VideoQuality.high,
+      isMinBitrateCheckEnabled: false,
     );
 
-     if(resullt is light.OnSuccess){
-       return File(resullt.destinationPath);
-
-     }else{
-       return file;
-
-     }
+    if (resullt is light.OnSuccess) {
+      return File(resullt.destinationPath);
+    } else {
+      return file;
+    }
   }
-
 }

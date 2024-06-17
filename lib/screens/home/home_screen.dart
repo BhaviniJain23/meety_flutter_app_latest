@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   void initState() {
-    controllerService.setController(PersistentTabController(initialIndex: 0));
+    controllerService.setController(PersistentTabController(initialIndex: 3));
     loginUser = sl<SharedPrefsManager>().getUserDataInfo();
     super.initState();
     WidgetsBinding.instance.addObserver(this);
@@ -79,7 +79,9 @@ class _HomeScreenState extends State<HomeScreen>
       context.read<OnlineUserProvider>().getOnlineUsers(refresh: true);
       context.read<UserChatListProvider>().fetchChats();
       context.read<HomeProvider>().fetchResetUserSettingAfterSubscription();
-      context.read<SubscriptionProvider>().fetchSubscriptions( context.read<LoginUserProvider>());
+      context
+          .read<SubscriptionProvider>()
+          .fetchSubscriptions(context.read<LoginUserProvider>());
       await notificationPermissions(context);
     });
   }
@@ -124,7 +126,6 @@ class _HomeScreenState extends State<HomeScreen>
           controller: controllerService.controller,
           hideNavigationBarWhenKeyboardShows: false,
           resizeToAvoidBottomInset: false,
-
           screens: const [
             HomeTab(),
             HomeLikesTab(),
@@ -134,8 +135,7 @@ class _HomeScreenState extends State<HomeScreen>
           onItemSelected: (selectedIndex) {
             if (controllerService.lastIndex != selectedIndex) {
               controllerService.setIndex(selectedIndex);
-              if (selectedIndex == 2) {
-              }
+              if (selectedIndex == 2) {}
             }
           },
           items: _navBarsItems(),
@@ -190,7 +190,6 @@ class _HomeScreenState extends State<HomeScreen>
             const Text('Home')
           ],
         ),
-
       ),
       PersistentBottomNavBarItem(
         contentPadding: 0,
@@ -288,7 +287,6 @@ class _HomeScreenState extends State<HomeScreen>
 
   void startBackgroundTimer() {
     sl<BackgroundTimer>().startTimer(() async {
-
       bool checkInternet =
           await sl<InternetConnectionService>().hasInternetConnection();
       if (checkInternet) {
@@ -301,7 +299,6 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void stopBackgroundTimer() {
-
     sl<BackgroundTimer>().stopBackgroundTimer(false);
   }
 }

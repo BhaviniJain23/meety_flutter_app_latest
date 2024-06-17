@@ -152,6 +152,7 @@ class UserRepository {
 
   Future<Map<String, dynamic>> getUserProfile({required String userId}) async {
     try {
+      log("userId: ${userId}");
       Either<String, Response?> response = await sl<ApiHelper>()
           .getCallWithoutHeader(
               api: EndPoints.GET_PROFILE_API, data: {"other_user_id": userId});
@@ -309,6 +310,7 @@ class UserRepository {
   Future<Map<String, dynamic>> notificationAPICall(
       {required Map<String, dynamic> data}) async {
     try {
+      log("data: ${data.toString()}");
       Either<String, Response?> response =
           await sl<ApiHelper>().postCallWithoutHeader(
         api: EndPoints.UPDATE_PROFILE_NOTIFICATION_AND_MAIL_API,
