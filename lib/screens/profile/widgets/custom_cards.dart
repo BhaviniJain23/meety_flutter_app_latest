@@ -27,7 +27,6 @@ class CustomRadio extends StatelessWidget {
               offset: const Offset(0.0, 0.75))
         ],
       ),
-
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,7 +62,7 @@ class LookingForCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // width: (context.width * 0.40),
-      width: ResponsiveDesign.screenWidth(context)*0.41,
+      width: ResponsiveDesign.screenWidth(context) * 0.41,
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       decoration: BoxDecoration(
         color: white,
@@ -122,7 +121,7 @@ class EducationCard extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       child: Text(
-        education.val,
+        education.val.name.toString(),
         style: context.textTheme.titleMedium!.copyWith(
             color: education.isSelected ? red : Colors.black,
             fontWeight: FontWeight.w700,

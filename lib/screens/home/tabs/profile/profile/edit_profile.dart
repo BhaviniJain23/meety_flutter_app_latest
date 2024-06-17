@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:meety_dating_app/models/education_model.dart';
 import 'package:meety_dating_app/models/interest.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
@@ -797,7 +798,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           sl<NavigationService>().navigateTo(
                             RoutePaths.occupation,
                             nextScreen: Occupation(
-                              selectedEducation: _education,
+                              // selectedEducation: _education,
+                              selectedEducation: EducationModel(
+                                  educationId: "",
+                                  name: _education,
+                                  isRestricted: "0"),
                               isOccupation: false,
                             ),
                           );
@@ -877,7 +882,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           sl<NavigationService>().navigateTo(
                             RoutePaths.occupation,
                             nextScreen: Occupation(
-                              selectedEducation: _occupation,
+                              // selectedEducation: _occupation,
+                              selectedEducation: EducationModel(
+                                  educationId: "",
+                                  name: _occupation,
+                                  isRestricted: "0"),
                               //isOccupation: false,
                             ),
                           );

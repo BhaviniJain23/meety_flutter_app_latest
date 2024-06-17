@@ -208,7 +208,8 @@ class ConstantList {
     UiString.capricorn,
     UiString.pisces,
   ];
-  static List<Education> educationsLevel = [
+  static List<Education> educationsLevel = [];
+  /* [
     Education(val: Constants.doctoralDeg, isSelected: false),
     Education(val: Constants.professionalDeg, isSelected: false),
     Education(val: Constants.masterDeg, isSelected: false),
@@ -224,7 +225,7 @@ class ConstantList {
     Education(val: Constants.militaryServiceGraduate, isSelected: false),
     Education(val: Constants.hybridEducationJourney, isSelected: false),
     Education(val: Constants.collegeDropoutPassionPursuer, isSelected: false),
-  ];
+  ];*/
   static List<String> educationsLevels = [
     UiString.doctoralDeg,
     UiString.professionalDeg,
@@ -243,7 +244,8 @@ class ConstantList {
     UiString.parentingUniversity,
     UiString.hybridEducationJourney,
   ];
-  static List<EducationModel> educationList = [
+  static List<EducationModel> educationList =
+      [] /*[
     EducationModel(
       educationId: "1",
       name: UiString.doctoralDeg,
@@ -305,7 +307,8 @@ class ConstantList {
       educationId: "19",
       name: UiString.charteredAccount,
     ),
-  ];
+  ]*/
+      ;
   static List<FuturePlan> futurePlan = [
     FuturePlan(val: Constants.startingAFamily, isSelected: false),
     FuturePlan(val: Constants.alreadyAParent, isSelected: false),
@@ -321,7 +324,8 @@ class ConstantList {
     FuturePlan(val: Constants.culturalTraditions, isSelected: false),
     FuturePlan(val: Constants.undecided, isSelected: false),
   ];
-  static List<EducationModel> occupation = [
+  static List<EducationModel> occupation =
+      [] /*[
     EducationModel(educationId: "1", name: "Accountant"),
     EducationModel(educationId: "2", name: "Actor/Actress"),
     EducationModel(educationId: "3", name: "Acupuncturist"),
@@ -466,7 +470,8 @@ class ConstantList {
     EducationModel(educationId: "140", name: "Yoga Instructor"),
     EducationModel(educationId: "141", name: "Yoga Therapist"),
     EducationModel(educationId: "142", name: "Zoologist")
-  ];
+  ]*/
+      ;
 
   static List<String> futurePlans = [
     UiString.startingAFamily,

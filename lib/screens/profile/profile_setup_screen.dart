@@ -83,7 +83,7 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
   final ValueNotifier<bool> isAPICall = ValueNotifier(false);
   final ValueNotifier<String> _countryCode = ValueNotifier("+91");
   final List educationMain = [];
-  final String selectEducation = '';
+  final EducationModel selectEducation = EducationModel.empty();
 
   @override
   void initState() {
@@ -378,27 +378,46 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
 
       List<EducationModel> list = [];
 
-      list = await ListRepository().getEducationNameList();
+      Map<String, dynamic> apiResponse = await UserRepository().getEducation();
+      d.log("education apiResponse: ${apiResponse.toString()}");
+      if (apiResponse['success']) {
+        list = List.from(apiResponse['data'].map((e) {
+          d.log("element: ${e.toString()}");
+          return EducationModel.fromJson(e);
+        }));
+      }
 
-      mainList.value = List.from(list);
-      filteredLists.value = List.from(list);
+      // list = await ListRepository().getEducationNameList();
+
+      d.log("list: ${list.join(", ").toString()}");
 
       int index = filteredLists.value
           .indexWhere((element) => element.name == selectEducation);
       if (index != -1) {
         selectedVal.value = filteredLists.value[index];
-      } else if (selectEducation.trim().isNotEmpty) {
+      } else if (selectEducation.educationId != null &&
+          selectEducation.educationId!.trim().isNotEmpty) {
         mainList.value.insert(
             0,
             EducationModel(
-                educationId: selectEducation, name: selectEducation));
+              educationId: selectEducation.toString(),
+              name: selectEducation.toString(),
+              isRestricted: selectEducation.isRestricted,
+            ));
         filteredLists.value.insert(
             0,
             EducationModel(
-                educationId: selectEducation, name: selectEducation));
+                educationId: selectEducation.toString(),
+                name: selectEducation.toString(),
+                isRestricted: selectEducation.isRestricted));
 
         selectedVal.value = filteredLists.value[0];
       }
+      mainList.value = List.from(list);
+      filteredLists.value = List.from(list);
+
+      d.log("mainList: ${mainList.value.join(", ").toString()}");
+      d.log("filteredLists: ${filteredLists.value.join(", ").toString()}");
     } on Exception catch (_) {
     } finally {
       isLoading.value = false;
@@ -1423,8 +1442,7 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
                             .contains(value.trim().toLowerCase()));
                     if (temp.isEmpty) {
                       filteredLists.value.clear();
-                      filteredLists.value
-                          .add(EducationModel(educationId: value, name: value));
+                      filteredLists.value.addAll(temp);
                     } else {
                       filteredLists.value = List.from(temp);
                     }

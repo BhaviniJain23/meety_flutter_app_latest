@@ -182,6 +182,34 @@ class UserRepository {
     }
   }
 
+  Future<Map<String, dynamic>> getEducation() async {
+    try {
+      Either<String, Response?> response = await sl<ApiHelper>()
+          .getCallWithoutHeader(api: EndPoints.GET_EDUCATION_API, data: {});
+      return response.fold((l) {
+        return UiString.fixFailResponse(errorMsg: l);
+      }, (r) {
+        return r?.data as Map<String, dynamic>;
+      });
+    } catch (e) {
+      return UiString.fixFailResponse();
+    }
+  }
+
+  Future<Map<String, dynamic>> getOccupations() async {
+    try {
+      Either<String, Response?> response = await sl<ApiHelper>()
+          .getCallWithoutHeader(api: EndPoints.GET_OCCUPATION_API, data: {});
+      return response.fold((l) {
+        return UiString.fixFailResponse(errorMsg: l);
+      }, (r) {
+        return r?.data as Map<String, dynamic>;
+      });
+    } catch (e) {
+      return UiString.fixFailResponse();
+    }
+  }
+
   Future<Map<String, dynamic>> reportUser(
       {required String userId, required String reason}) async {
     try {

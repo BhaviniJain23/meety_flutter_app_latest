@@ -65,6 +65,7 @@ class EndPoints {
       "$Live_URL/user/updateSendingNotificationType";
   static var UPDATE_PROFILE_NOTIFICATION_AND_MAIL_API =
       "$Live_URL/user/updateNotificationType";
+
   /// ============================================================== ///
   ///
   ///

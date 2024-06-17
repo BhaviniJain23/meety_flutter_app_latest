@@ -1,13 +1,10 @@
-
+import 'package:meety_dating_app/models/education_model.dart';
 
 class Gender {
   String val;
   bool isSelected;
 
-  Gender(
-      {
-      required this.val,
-      required this.isSelected});
+  Gender({required this.val, required this.isSelected});
 }
 
 class SexOrientation {
@@ -25,7 +22,7 @@ class LookingFor {
 }
 
 class Education {
-  String val;
+  EducationModel val;
   bool isSelected;
 
   Education({required this.val, required this.isSelected});

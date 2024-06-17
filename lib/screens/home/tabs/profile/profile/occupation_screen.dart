@@ -22,7 +22,7 @@ class Occupation extends StatefulWidget {
   const Occupation(
       {super.key, required this.selectedEducation, this.isOccupation = true});
 
-  final String selectedEducation;
+  final EducationModel selectedEducation;
   final bool isOccupation;
 
   @override
@@ -50,9 +50,18 @@ class _OccupationState extends State<Occupation> {
       isLoading.value = true;
 
       List<EducationModel> list = [];
+      List<EducationModel> restrictedList = [];
 
       if (widget.isOccupation) {
-        list = await ListRepository().getOccupationList();
+        List<EducationModel> allData =
+            await ListRepository().getOccupationList();
+        allData.forEach((element) {
+          if (element.isRestricted == "0") {
+            list.add(element);
+          } else {
+            restrictedList.add(element);
+          }
+        });
       } else {
         list = await ListRepository().getEducationNameList();
       }
@@ -64,17 +73,20 @@ class _OccupationState extends State<Occupation> {
           .indexWhere((element) => element.name == widget.selectedEducation);
       if (index != -1) {
         selectedVal.value = filteredList.value[index];
-      } else if (widget.selectedEducation.trim().isNotEmpty) {
+      } else if (widget.selectedEducation.educationId != null &&
+          widget.selectedEducation.educationId!.trim().isNotEmpty) {
         mainList.value.insert(
             0,
             EducationModel(
-                educationId: widget.selectedEducation,
-                name: widget.selectedEducation));
+                educationId: widget.selectedEducation.educationId,
+                name: widget.selectedEducation.name,
+                isRestricted: widget.selectedEducation.isRestricted));
         filteredList.value.insert(
             0,
             EducationModel(
-                educationId: widget.selectedEducation,
-                name: widget.selectedEducation));
+                educationId: widget.selectedEducation.educationId,
+                name: widget.selectedEducation.name,
+                isRestricted: widget.selectedEducation.isRestricted));
         selectedVal.value = filteredList.value[0];
       }
     } on Exception catch (_) {
@@ -84,12 +96,15 @@ class _OccupationState extends State<Occupation> {
   }
 
   void onSearchTextChanged(String value) {
-    var temp = mainList.value.where((element) => (element.name ?? '')
-        .toLowerCase()
-        .contains(value.trim().toLowerCase()));
+    List<EducationModel> temp = mainList.value.where((element) =>
+        (element.name ?? '')
+            .toLowerCase()
+            .contains(value.trim().toLowerCase())) as List<EducationModel>;
     if (temp.isEmpty) {
       filteredList.value.clear();
-      filteredList.value.add(EducationModel(educationId: value, name: value));
+      filteredList.value.addAll(temp);
+      // filteredList.value.add(
+      //     EducationModel(educationId: value, name: value, isRestricted: ''));
     } else {
       filteredList.value = List.from(temp);
     }
