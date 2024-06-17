@@ -57,7 +57,14 @@ class EndPoints {
   static const POST_BLOCK_USER_NUMBER_API =
       "$Live_URL/user/blockUserFromNumber";
   static const POST_UNBLOCK_API = "$Live_URL/user/unblockNumbers";
-
+  static const POST_SEND_EMAIL_OTP_FROM_SETTING_API =
+      "$Live_URL/user/sendEmailOTPFromSetting";
+  static const POST_UPDATE_EMAIL_ACCOUNT_SETTING_API =
+      "$Live_URL/user/updateEmailAccountSetting";
+  static const UPDATE_NOTIFICATION_TYPE_API =
+      "$Live_URL/user/updateSendingNotificationType";
+  static var UPDATE_PROFILE_NOTIFICATION_AND_MAIL_API =
+      "$Live_URL/user/updateNotificationType";
   /// ============================================================== ///
   ///
   ///
@@ -65,10 +72,7 @@ class EndPoints {
   /// ============================================================== ///
 
   static const POST_UPDATE_REWIND_TIME_API = "$Live_URL/user/updateRewindTime";
-  static const POST_SEND_EMAIL_OTP_FROM_SETTING_API =
-      "$Live_URL/user/sendEmailOTPFromSetting";
-  static const POST_UPDATE_EMAIL_ACCOUNT_SETTING_API =
-      "$Live_URL/user/updateEmailAccountSetting";
+
   static const HOME_USER_LIST_API = "$Live_URL/home/listOfUserForHome";
   static const UPDATE_VISIT_STATUS_API = "$Live_URL/user/updateVisitStatus";
   static const LIKE_USER_LIST_API = "$Live_URL/user/getLikeList";
@@ -78,9 +82,6 @@ class EndPoints {
   static const GET_TOTAL_COUNT_LIKES_API =
       "$Live_URL/user/getTotalCountForlikes";
 
-  static const UPDATE_NOTIFICATION_TYPE_API =
-      // "$Live_URL/user/updateNotificationType";
-      "$Live_URL/user/updateNotificationType";
   static const USER_CHAT_LIST_API = "$Live_URL/chats/getUserChatList";
   static const USER_NAME_CHANNEL_API = "$Live_URL/chats/userChannelName";
   static const ADD_REWIND_API = "$Live_URL/user/addRewind";
@@ -103,8 +104,6 @@ class EndPoints {
       "$Live_URL/usersetting/resetUserSettingAfterSubscription";
   static var UPDATE_SHOW_PROFILE_AND_ONLINE_API =
       "$Live_URL/usersetting/updateShowProfileAndOnline";
-  static var UPDATE_PROFILE_NOTIFICATION_AND_MAIL_API =
-      "$Live_URL/usersetting/updateProfileNotificationAndMailSendSetting";
   static var UPLOAD_CHAT_IMAGES_API = "$Live_URL/chats/uploadChatImage";
   static var TAKE_SUBSCRIPTION_API = "$Live_URL/subscription/takeSubscription";
   static var TAKE_ADDONS_API = "$Live_URL/subscription/takeAddOns";
