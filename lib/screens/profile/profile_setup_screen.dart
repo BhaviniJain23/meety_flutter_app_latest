@@ -1439,7 +1439,7 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
                     d.log("temp: ${temp.join(", ")}");
                     if (temp.isEmpty) {
                       filteredLists.value.clear();
-                      filteredLists.value.addAll(tep);
+                      filteredLists.value.addAll(temp);
                     } else {
                       filteredLists.value = List.from(temp);
                     }
