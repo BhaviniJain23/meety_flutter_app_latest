@@ -10,7 +10,7 @@ String educationModelToJson(List<EducationModel> data) =>
 class EducationModel {
   String? educationId;
   String? name;
-  String? isRestricted;
+  int? isRestricted;
 
   EducationModel({
     required this.educationId,
@@ -19,7 +19,7 @@ class EducationModel {
   });
 
   static EducationModel empty() =>
-      EducationModel(educationId: "", name: "", isRestricted: "");
+      EducationModel(educationId: "", name: "", isRestricted: 1);
 
   EducationModel copyWith({
     String? educationId,

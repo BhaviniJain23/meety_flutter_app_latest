@@ -802,7 +802,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               selectedEducation: EducationModel(
                                   educationId: "",
                                   name: _education,
-                                  isRestricted: "0"),
+                                  isRestricted: 1),
                               isOccupation: false,
                             ),
                           );
@@ -886,7 +886,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               selectedEducation: EducationModel(
                                   educationId: "",
                                   name: _occupation,
-                                  isRestricted: "0"),
+                                  isRestricted: 1),
                               //isOccupation: false,
                             ),
                           );

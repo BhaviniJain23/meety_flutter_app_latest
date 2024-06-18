@@ -379,17 +379,13 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
       List<EducationModel> list = [];
 
       Map<String, dynamic> apiResponse = await UserRepository().getEducation();
-      d.log("education apiResponse: ${apiResponse.toString()}");
-      if (apiResponse['success']) {
-        list = List.from(apiResponse['data'].map((e) {
-          d.log("element: ${e.toString()}");
-          return EducationModel.fromJson(e);
-        }));
+      // d.log("education apiResponse: ${apiResponse.toString()}");
+      if (apiResponse[UiString.successText]) {
+        list.addAll(List.from(apiResponse[UiString.dataText]
+            .map((e) => EducationModel.fromJson(e))));
       }
 
       // list = await ListRepository().getEducationNameList();
-
-      d.log("list: ${list.join(", ").toString()}");
 
       int index = filteredLists.value
           .indexWhere((element) => element.name == selectEducation);
@@ -1440,9 +1436,10 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
                         (element.name?.trim() ?? '')
                             .toLowerCase()
                             .contains(value.trim().toLowerCase()));
+                    d.log("temp: ${temp.join(", ")}");
                     if (temp.isEmpty) {
                       filteredLists.value.clear();
-                      filteredLists.value.addAll(temp);
+                      filteredLists.value.addAll(tep);
                     } else {
                       filteredLists.value = List.from(temp);
                     }
