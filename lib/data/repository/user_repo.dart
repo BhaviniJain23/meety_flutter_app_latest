@@ -152,10 +152,11 @@ class UserRepository {
 
   Future<Map<String, dynamic>> getUserProfile({required String userId}) async {
     try {
-      log("userId: ${userId}");
+      // log("userId: ${userId}");
       Either<String, Response?> response = await sl<ApiHelper>()
-          .getCallWithoutHeader(
+          .postCallWithoutHeader(
               api: EndPoints.GET_PROFILE_API, data: {"other_user_id": userId});
+
       return response.fold((l) {
         return UiString.fixFailResponse(errorMsg: l);
       }, (r) {

@@ -56,7 +56,7 @@ class _OccupationState extends State<Occupation> {
         List<EducationModel> allData =
             await ListRepository().getOccupationList();
         allData.forEach((element) {
-          if (element.isRestricted == "0") {
+          if (element.isRestricted == 0) {
             list.add(element);
           } else {
             restrictedList.add(element);

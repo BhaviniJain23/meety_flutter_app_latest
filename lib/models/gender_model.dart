@@ -5,6 +5,11 @@ class Gender {
   bool isSelected;
 
   Gender({required this.val, required this.isSelected});
+
+  @override
+  String toString() {
+    return Gender(val: val, isSelected: isSelected).val.toString();
+  }
 }
 
 class SexOrientation {
@@ -12,6 +17,11 @@ class SexOrientation {
   bool isSelected;
 
   SexOrientation({required this.val, required this.isSelected});
+
+  @override
+  String toString() {
+    return SexOrientation(val: val, isSelected: isSelected).val.toString();
+  }
 }
 
 class LookingFor {

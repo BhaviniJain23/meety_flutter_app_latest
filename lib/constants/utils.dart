@@ -792,8 +792,8 @@ class Utils {
         ?.pastSubscription
         ?.expiryDate;
 
-    Duration difference = expirationDate!.difference(DateTime.now());
-    return difference.inDays;
+    Duration? difference = expirationDate?.difference(DateTime.now());
+    return difference?.inDays ?? 0;
   }
 
   static void showBottomSheet(

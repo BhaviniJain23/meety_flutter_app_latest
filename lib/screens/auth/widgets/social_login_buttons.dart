@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -99,8 +100,8 @@ class _SocialLoginBtnsState extends State<SocialLoginBtns> {
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn();
       await googleSignIn.signOut();
-      Future.delayed(const Duration(milliseconds: 200),(){
-        _showLoadingDialog(context,'Signing in with Google...');
+      Future.delayed(const Duration(milliseconds: 200), () {
+        _showLoadingDialog(context, 'Signing in with Google...');
       });
       final GoogleSignInAccount googleSignInAccount =
           (await googleSignIn.signIn())!;
@@ -115,16 +116,16 @@ class _SocialLoginBtnsState extends State<SocialLoginBtns> {
             googleSignIn.currentUser!.email,
             googleSignIn.currentUser!.displayName ?? '');
         _dismissLoadingDialog(); // Dismiss the dialog when the sign-in process is done
-
       }
     } on Exception catch (e) {
+      log('Exception: ${e.toString()}');
       Future.delayed(const Duration(seconds: 0), () {
         context.showSnackBar(e.toString());
       });
     }
   }
 
-  Future<void> _showLoadingDialog(BuildContext context,String message) async {
+  Future<void> _showLoadingDialog(BuildContext context, String message) async {
     dialogContext = context; // Store the dialog context
     showDialog<void>(
       context: context,
@@ -259,9 +260,9 @@ class _SocialLoginBtnsState extends State<SocialLoginBtns> {
           lname: lname);
       if (apiResponse[UiString.successText]) {
         if (apiResponse[UiString.dataText] != null) {
-
-          if((apiResponse[UiString.dataText] as Map).containsKey("token")){
-            await sl<SharedPrefsManager>().saveToken(apiResponse[UiString.dataText]['token']);
+          if ((apiResponse[UiString.dataText] as Map).containsKey("token")) {
+            await sl<SharedPrefsManager>()
+                .saveToken(apiResponse[UiString.dataText]['token']);
           }
           User user = User.fromJson(apiResponse[UiString.dataText]);
           await sl<SharedPrefsManager>().saveUserInfo(user);
@@ -277,7 +278,8 @@ class _SocialLoginBtnsState extends State<SocialLoginBtns> {
               } else {
                 context.showSnackBar(apiResponse[UiString.messageText]);
                 Navigator.pushNamedAndRemoveUntil(
-                    context, RoutePaths.enableLocation, (route) => false,arguments: true);
+                    context, RoutePaths.enableLocation, (route) => false,
+                    arguments: true);
               }
             } else {
               context.showSnackBar(apiResponse[UiString.messageText]);

@@ -298,6 +298,8 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
                                                 positiveText: "Ok",
                                                 negativeText: "Skip",
                                                 noTap: () {
+                                                  d.log(
+                                                      'gender1: ${genderList.value.join(", ")}');
                                                   _pageController.nextPage(
                                                       duration: const Duration(
                                                           milliseconds: 100),
@@ -311,6 +313,8 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
                                                 },
                                               );
                                             } else {
+                                              d.log(
+                                                  'gender2: ${genderList.value.join(", ")}');
                                               _pageController.nextPage(
                                                   duration: const Duration(
                                                       milliseconds: 100),
@@ -377,14 +381,23 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
       isLoading.value = true;
 
       List<EducationModel> list = [];
+      List<EducationModel> restrictedList = [];
 
       Map<String, dynamic> apiResponse = await UserRepository().getEducation();
       // d.log("education apiResponse: ${apiResponse.toString()}");
       if (apiResponse[UiString.successText]) {
-        list.addAll(List.from(apiResponse[UiString.dataText]
+        mainList.value.addAll(List.from(apiResponse[UiString.dataText]
             .map((e) => EducationModel.fromJson(e))));
       }
 
+      mainList.value.forEach((element) {
+        // d.log('element.isRestricted: ${element.isRestricted}');
+        if (element.isRestricted == 0) {
+          list.add(element);
+        } else {
+          restrictedList.add(element);
+        }
+      });
       // list = await ListRepository().getEducationNameList();
 
       int index = filteredLists.value
@@ -412,8 +425,9 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
       mainList.value = List.from(list);
       filteredLists.value = List.from(list);
 
-      d.log("mainList: ${mainList.value.join(", ").toString()}");
-      d.log("filteredLists: ${filteredLists.value.join(", ").toString()}");
+      // d.log("mainList: ${mainList.value.join(", ").toString()}");
+      // d.log("filteredLists: ${filteredLists.value.join(", ").toString()}");
+      // d.log("restrictedList: ${restrictedList.join(", ").toString()}");
     } on Exception catch (_) {
     } finally {
       isLoading.value = false;
@@ -464,7 +478,7 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
     if (data.containsKey("interest") &&
         data['interest'].toString().isNotEmpty) {
       // myInterestList.value = data['interest'].toString().split(",");
-      d.log('interest: ${data['interest']}');
+      // d.log('interest: ${data['interest']}');
       // myInterestList.value = List<Interest>.from(data['interest'].map(e) => Interest.from(e));
     } else {
       myInterestList.value = List.from([]);
@@ -1630,6 +1644,27 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
             lookingForList.value.indexWhere((element) => element.isSelected);
         int educationIndex = mainList.value.indexWhere(
             (element) => element.educationId == selectedVal.value?.educationId);
+
+        String sexOrientationValue = "";
+        if (genderIndex == 2) {
+          int value =
+              showMeList.value.indexWhere((element) => element.isSelected);
+          // d.log('value: ${value.toString()}');
+          // d.log('value2: ${showMeList.value[value].toString()}');
+
+          if (value == 2) {
+            sexOrientationValue = "${UiString.man}/${UiString.woman}";
+          } else if (value != -1) {
+            sexOrientationValue = genderList.value[value].val;
+          }
+        } else {
+          sexOrientationValue = sexOrientation.value
+              .where((element) => element.isSelected)
+              .map((e) => e.val)
+              .toList()
+              .join(",");
+        }
+
         Map<String, dynamic> data = {
           // ignore: unnecessary_string_escapes
           'fname': _firstName.text.trim().replaceAll("'", "\\'"),
@@ -1640,11 +1675,7 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
           //     "${_countryCode.value} ${_mobileNumber.text.trim()}",
           'gender': genderIndex != -1 ? genderList.value[genderIndex].val : '',
           'is_gender_show': isGenderVisible.value ? '1' : '0',
-          'sex_orientation': sexOrientation.value
-              .where((element) => element.isSelected)
-              .map((e) => e.val)
-              .toList()
-              .join(","),
+          'sex_orientation': sexOrientationValue,
           'is_sex_orientation_show': isSexOrientationVisible.value ? '1' : '0',
           'show_me': showMeIndex != -1 ? showMeList.value[showMeIndex].val : '',
           'is_show_me': isShowMe.value ? '1' : '0',
