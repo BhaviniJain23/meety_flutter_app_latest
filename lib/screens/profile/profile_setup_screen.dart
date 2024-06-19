@@ -63,6 +63,7 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
   List<Interest> allInterests = [Interest.empty()];
 
   final ValueNotifier<List<EducationModel>> mainList = ValueNotifier([]);
+  final ValueNotifier<List<EducationModel>> restrictedList = ValueNotifier([]);
   final ValueNotifier<List<EducationModel>> filteredLists = ValueNotifier([]);
   final ValueNotifier<EducationModel?> selectedVal = ValueNotifier(null);
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
@@ -381,7 +382,6 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
       isLoading.value = true;
 
       List<EducationModel> list = [];
-      List<EducationModel> restrictedList = [];
 
       Map<String, dynamic> apiResponse = await UserRepository().getEducation();
       // d.log("education apiResponse: ${apiResponse.toString()}");
@@ -391,11 +391,11 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
       }
 
       mainList.value.forEach((element) {
-        // d.log('element.isRestricted: ${element.isRestricted}');
+        d.log('element.isRestricted: ${element.toJson().toString()}');
         if (element.isRestricted == 0) {
           list.add(element);
         } else {
-          restrictedList.add(element);
+          restrictedList.value.add(element);
         }
       });
       // list = await ListRepository().getEducationNameList();
@@ -1453,7 +1453,14 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
                     d.log("temp: ${temp.join(", ")}");
                     if (temp.isEmpty) {
                       filteredLists.value.clear();
-                      filteredLists.value.addAll(temp);
+                      int isRestricted = restrictedList.value.indexWhere(
+                          (element) =>
+                              element.name?.toLowerCase() ==
+                              value.toLowerCase());
+                      filteredLists.value.add(EducationModel(
+                          educationId: value,
+                          name: value,
+                          isRestricted: (isRestricted == -1) ? 1 : 0));
                     } else {
                       filteredLists.value = List.from(temp);
                     }
@@ -1518,7 +1525,17 @@ class _ProfileSetUpScreenState extends State<ProfileSetUpScreen>
                         return InkWell(
                           borderRadius: BorderRadius.circular(10),
                           onTap: () {
-                            choice.select!(!choice.selected);
+                            int isRestricted = restrictedList.value.indexWhere(
+                                (element) =>
+                                    element.name?.toLowerCase() ==
+                                    choice.label.toLowerCase());
+                            d.log('isRestricted: $isRestricted');
+                            if (isRestricted == -1) {
+                              choice.select!(!choice.selected);
+                            } else {
+                              context
+                                  .showSnackBar(UiString.educationRestricted);
+                            }
                           },
                           child: Container(
                             width: (context.width * 0.41),

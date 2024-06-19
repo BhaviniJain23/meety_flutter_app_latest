@@ -242,6 +242,7 @@ class UiString {
   static const woman = 'Female';
   static const trans = 'Trans';
   static const everyone = 'Everyone';
+  static const educationRestricted = 'Education is Restricted.';
 
   static const straight = 'Straight';
   static const homosexual = 'Homosexual';
