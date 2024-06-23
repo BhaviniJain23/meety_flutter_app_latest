@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_is_empty, use_build_context_synchronously
 
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -13,6 +14,7 @@ import 'package:meety_dating_app/constants/colors.dart';
 import 'package:meety_dating_app/constants/size_config.dart';
 import 'package:meety_dating_app/constants/ui_strings.dart';
 import 'package:meety_dating_app/constants/utils.dart';
+import 'package:meety_dating_app/data/repository/user_repo.dart';
 import 'package:meety_dating_app/models/photo.dart';
 import 'package:meety_dating_app/models/user.dart';
 import 'package:meety_dating_app/providers/photo_provider.dart';
@@ -496,7 +498,8 @@ class _AddPhotosState extends State<AddPhotos> {
     if (widget.editImages.isEmpty) {
       return Padding(
         padding: const EdgeInsets.only(right: 8.0),
-        child: TextBtnX(color: red,
+        child: TextBtnX(
+          color: red,
           onPressed: () {
             AlertService.showAlertMessageWithBtn(
                 context: context,
@@ -626,6 +629,10 @@ class _AddPhotosState extends State<AddPhotos> {
   Future<void> deletePhoto(PhotosProvider provider, int index) async {
     if (images[index].isUploaded) {
       filename.add(images[index].url.toString().extractNameFromFilePath());
+      Map<String, dynamic> apiResponse = await UserRepository()
+          .deleteProfilePic(
+              userId: user?.id ?? "", filename: images[index].file?.path ?? "");
+      log("deletePhoto: ${apiResponse.toString()}");
       provider.updateLoadingIndex(index);
       Future.delayed(const Duration(seconds: 1), () {
         provider.deletePhoto(index.toString());

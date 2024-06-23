@@ -158,14 +158,17 @@ class AuthRepository {
   Future<Map<String, dynamic>> resetPassword(
       {required String userId, required String newPassword}) async {
     try {
+      Map<String, dynamic> data = {
+        'user_id': userId,
+        'new_pass': newPassword,
+      };
       Either<String, Response?> response =
           await sl<ApiHelper>().postCallWithoutHeader(
         api: EndPoints.RESET_PASSWORD_API,
-        data: {
-          'user_id': userId,
-          'new_pass': newPassword,
-        },
+        data: data,
       );
+      log("data: ${data.toString()}");
+      log("response: ${response.toString()}");
       return response.fold((l) {
         return UiString.fixFailResponse(errorMsg: l);
       }, (r) {

@@ -15,7 +15,7 @@ class EndPoints {
   static const CHECK_USER_EXISTS_WITH_PHONE_API =
       "$Live_URL/checkUserExistWithPhoneNumber";
   static const FORGOT_PASSWORD_API = "$Live_URL/user/forgotPassword";
-  static const RESET_PASSWORD_API = "$Live_URL/user/resetPassword";
+  static const RESET_PASSWORD_API = "$Live_URL/resetPassword";
   static const CHANGE_PASSWORD_API = "$Live_URL/user/changePassword";
   static const VERIFY_OTP_API = "$Live_URL/user/verifyEmailOTP";
   static const RESEND_OTP_API = "$Live_URL/user/resendEmailOTP";

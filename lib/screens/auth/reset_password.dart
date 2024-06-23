@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:meety_dating_app/constants/ui_strings.dart';
 import 'package:meety_dating_app/data/repository/login_repo.dart';
+import 'package:meety_dating_app/screens/auth/login_screen.dart';
 import 'package:meety_dating_app/screens/auth/widgets/headings.dart';
 import 'package:meety_dating_app/screens/auth/widgets/texfields.dart';
 import 'package:meety_dating_app/services/internet_service.dart';
@@ -81,6 +82,10 @@ class _ResetPasswordState extends State<ResetPassword> {
           log("apiResponse: ${apiResponse.toString()}");
           if (apiResponse[UiString.successText]) {
             sl<NavigationService>().popUntil((route) => route.isFirst);
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
+                (route) => true);
           } else {
             Future.delayed(const Duration(seconds: 0), () {
               context.showSnackBar(UiString.changePasswordSnackbarText);

@@ -84,6 +84,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       onWillPop: () async {
         final value = Provider.of<EditUserProvider>(context, listen: false);
 
+        log("con: ${value.loginUser == loginUser}");
         if (value.loginUser == loginUser) {
           if (context.read<LoginUserProvider>().profileCompletePercentage <
               70) {

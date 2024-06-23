@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -21,8 +23,9 @@ class InterestRepository {
             (ConstantList.interestList).map((e) => Interest.fromJson(e)));
         return list;
       }, (r) {
-        List<Interest> list = List.from((r?.data['list'] as List<dynamic>)
-            .map((e) => Interest.fromJson(e)));
+        log("interest data: ${r?.data['data'].toString()}");
+        List<Interest> list =
+            List.from((r?.data['data']).map((e) => Interest.fromJson(e)));
         if (list.isNotEmpty) {
           return list;
         }

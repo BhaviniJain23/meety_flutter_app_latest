@@ -451,7 +451,7 @@ class UserRepository {
       Either<String, Response?> response =
           await sl<ApiHelper>().postCallWithoutHeader(
         api: EndPoints.DELETE_ACCOUNT_API,
-        data: {'delete_status': Constants.deactivate, "days": days},
+        data: {'delete_status': Constants.deactivate, "deactive_days": days},
       );
       return response.fold((l) {
         return UiString.fixFailResponse(errorMsg: l);

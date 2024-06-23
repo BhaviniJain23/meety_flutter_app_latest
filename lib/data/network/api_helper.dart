@@ -43,84 +43,86 @@ class ApiHelper {
     dynamic body, {
     bool isToken = true,
   }) async {
-    try {
-      // Check internet connectivity
-      bool isInternet =
-          await sl<InternetConnectionService>().hasInternetConnection();
-      // String authToken =  sl<SharedPrefsManager>().getToken();
+    // try {
+    // Check internet connectivity
+    bool isInternet =
+        await sl<InternetConnectionService>().hasInternetConnection();
+    // String authToken =  sl<SharedPrefsManager>().getToken();
 
-      print(isInternet);
-      if (isInternet) {
-        // Prepare headers
-        Response<Map<String, dynamic>>? response;
-        Map<String, dynamic> headersVal = {"Content-Type": "application/json"};
+    print(isInternet);
+    if (isInternet) {
+      // Prepare headers
+      Response<Map<String, dynamic>>? response;
+      Map<String, dynamic> headersVal = {"Content-Type": "application/json"};
 
-        if (isToken) {
-          String? token = sl<SharedPrefsManager>().getToken();
-          // headersMap["Authorization"] = token;
-          headersVal["Authorization"] = "Bearer $token";
-        }
+      if (isToken) {
+        String? token = sl<SharedPrefsManager>().getToken();
+        // headersMap["Authorization"] = token;
+        headersVal["Authorization"] = "Bearer $token";
+      }
 
-        // log("data: ${body.toString()}");
-        // log("headersVal: ${headersVal.toString()}");
+      // log("data: ${body.toString()}");
+      // log("headersVal: ${headersVal.toString()}");
 
-        // Send HTTP request based on the method
-        if (method == 'get') {
-          response = await _dio.get(
-            url,
-            options: Options(
-              headers: headersVal,
-            ),
-          );
-        } else if (method == 'put') {
-          response = await _dio.put(
-            url,
-            data: body,
-            options: Options(
-              headers: headersVal,
-            ),
-          );
-        } else if (method == 'delete') {
-          response = await _dio.delete(
-            url,
-            data: body,
-            options: Options(
-              headers: headersVal,
-            ),
-          );
-        } else {
-          response = await _dio.post(
-            url,
-            data: body,
-            options: Options(
-              headers: headersVal,
-            ),
-          );
-        }
-        log("response: ${response.toString()}");
-        log("data: ${response.data.toString()}");
-        log("statusCode: ${response.statusCode.toString()}");
-        log("realUri: ${response.realUri.toString()}");
-        log("headers: ${response.headers.toString()}");
-
-        // Return the response data and success status
-        if (response.statusCode == 200) {
-          return Right(response);
-        } else {
-          return Left(
-            response.data!['message'].toString() ?? '',
-          );
-        }
+      // Send HTTP request based on the method
+      if (method == 'get') {
+        response = await _dio.get(
+          url,
+          options: Options(
+            headers: headersVal,
+          ),
+        );
+      } else if (method == 'put') {
+        response = await _dio.put(
+          url,
+          data: body,
+          options: Options(
+            headers: headersVal,
+          ),
+        );
+      } else if (method == 'delete') {
+        response = await _dio.delete(
+          url,
+          data: body,
+          options: Options(
+            headers: headersVal,
+          ),
+        );
       } else {
-        return const Left(
-          "No Internet",
+        response = await _dio.post(
+          url,
+          data: body,
+          options: Options(
+            headers: headersVal,
+          ),
         );
       }
-    } on DioException catch (e) {
-      return Left(
-        e.toString(),
+      // log("response: ${response.toString()}");
+      // log("data: ${response.data.toString()}");
+      // log("statusCode: ${response.statusCode.toString()}");
+      // log("realUri: ${response.realUri.toString()}");
+      // log("headers: ${response.headers.toString()}");
+
+      // Return the response data and success status
+      if (response.statusCode == 200) {
+        log("right response !!!");
+        return Right(response);
+      } else {
+        log("left response !!!");
+        return Left(
+          response.data!['message'].toString() ?? '',
+        );
+      }
+    } else {
+      return const Left(
+        "No Internet",
       );
     }
+    // } on DioException catch (e) {
+    //   return Left(
+    //     e.toString(),
+    //   );
+    // }
   }
 
   Future<Either<String, Response?>> getCallWithoutHeader(
@@ -134,6 +136,8 @@ class ApiHelper {
       {required String api,
       required Map<String, dynamic> data,
       bool headers = true}) async {
+    log("post data: ${data.toString()}");
+    log("api: ${api.toString()}");
     return await _sendRequest('post', api, data, isToken: headers);
   }
 
